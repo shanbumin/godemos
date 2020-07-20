@@ -18,8 +18,20 @@ var rootCmd = &cobra.Command{
 	Short: "你应用的简短描述",
 	Long: `跨多行且可能包含的较长描述使用您的应用程序的示例和用法。`,
 	//程序并不带参数运行，这次就不再输出上述的long帮助信息了，而是执行了 rootCmd 的 Run 方法
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		fmt.Printf("Inside rootCmd PersistentPreRun with args: %v\n", args)
+	},
+	PreRun: func(cmd *cobra.Command, args []string) {
+		fmt.Printf("Inside rootCmd PreRun with args: %v\n", args)
+	},
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("cobra demo program")
+		fmt.Printf("cobra demo program, with args: %v\n", args)
+	},
+	PostRun: func(cmd *cobra.Command, args []string) {
+		fmt.Printf("Inside rootCmd PostRun with args: %v\n", args)
+	},
+	PersistentPostRun: func(cmd *cobra.Command, args []string) {
+		fmt.Printf("Inside rootCmd PersistentPostRun with args: %v\n", args)
 	},
 }
 
