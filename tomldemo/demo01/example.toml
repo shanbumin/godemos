@@ -17,7 +17,7 @@ title = "TOML示例"
 
 # Redis主从                           # 字典对象
 [redis]
-    [redis.master]
+    [redis.Master]
         host = "10.0.0.1"
         port = 6379
     [redis.slave]

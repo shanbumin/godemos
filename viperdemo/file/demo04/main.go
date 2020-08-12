@@ -29,6 +29,7 @@ func init() {
 func main() {
 	//4.获取配置文件中配置项的信息
 	fmt.Println(viper.GetString("App.AppID"))
+	fmt.Println(viper.GetStringMap("Redis"))
 
 
 	////5.监控配置变化情况
