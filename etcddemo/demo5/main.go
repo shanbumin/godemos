@@ -32,11 +32,12 @@ func main() {
 	// 用于读写etcd的键值对
 	kv = clientv3.NewKV(client)
 
-	// 删除KV
+	// 删除KV   clientv3.WithFromKey()
 	if delResp, err = kv.Delete(context.TODO(), "/crontab/jobs/job1", clientv3.WithFromKey()); err != nil {
 		fmt.Println(err)
 		return
 	}
+	fmt.Printf("%+v\r\n",delResp)
 
 	// 被删除之前的value是什么
 	if len(delResp.PrevKvs) != 0 {

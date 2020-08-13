@@ -45,6 +45,7 @@ func main() {
 	// 拿到租约的ID
 	leaseId = leaseGrantResp.ID //====>694d69eb2b366571
 
+	//todo 只要我们发起续约，则接下来每隔1秒就会通过chan中添加信息问客户端是否还要继续，只要消费，则每隔?(小于租期)秒继续续租
 	// 租约续约   etcdctl lease keep-alive  694d69eb2b36657f
 	if keepRespChan, err = lease.KeepAlive(context.TODO(), leaseId); err != nil {
 		fmt.Println(err)
@@ -89,6 +90,6 @@ func main() {
 			break
 		}
 		fmt.Println("还没过期:", getResp.Kvs)
-		time.Sleep(10 * time.Second)
+		time.Sleep(20 * time.Second)
 	}
 }
