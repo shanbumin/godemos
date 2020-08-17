@@ -1,0 +1,11 @@
+注意
+
+jwt不提供加密，仅仅是用来作为验证身份的令牌
+
+
+
+HMAC签名方法（HS256，HS384，HS512）期望[] byte值用于签名和验证
+RSA签名方法（RS256，RS384，RS512）期望* rsa.PrivateKey进行签名，而* rsa.PublicKey进行验证
+ECDSA签名方法（ES256，ES384，ES512）期望* ecdsa.PrivateKey进行签名，而* ecdsa.PublicKey进行验证
+
+
