@@ -12,16 +12,16 @@ import (
 
 
 type Student struct {
-	Id        int64 `xorm:"pk autoincr"`
+	Id        int64
 	Age      int     `xorm:"notnull default 0 comment('年纪')"`
 	Name     string  `xorm:"varchar(255) notnull unique  default '' comment('姓名')"`
 	Sex       bool    `xorm:"default 0 comment('性别')"`
 	Url       string  `xorm:"index notnull index default '' comment('地址')"`
 	Status    uint8    `xorm:"notnull default 0 comment('状态')"`
 	Version   int64   `xorm:"version"`
-	CreatedAt time.Time `xorm:"'created'"`
-	UpdatedAt time.Time  `xorm:"'updated'"`
-	DeletedAt time.Time `xorm:"'deleted'"` // 此特性会激发软删除
+	CreatedAt time.Time `xorm:"created"`
+	UpdatedAt time.Time  `xorm:"updated"`
+	DeletedAt time.Time `xorm:"deleted"` // 此特性会激发软删除
 }
 
 func (m *Student) TableName() string {
@@ -41,6 +41,7 @@ func main() {
 	if err !=nil{
 		log.Fatal(err)
 	}
+	engine.ShowSQL(true)
 	//第二步 同步创建表
 	err=engine.Sync2(new(Student))
 	if err !=nil{

@@ -29,7 +29,7 @@ type Student struct {
 	Second    string  `xorm:"varchar(100) notnull default '' index('fs') comment('二号')"` //模拟演示联合普通索引字段二
 	Age       uint8     `xorm:"tinyint(3) notnull default 0 comment('年纪')"` //年纪
 	Url       string  `xorm:"-"`
-	Money     decimal.Decimal  `xorm:"decimal(10,2)"`
+	Money     decimal.Decimal  `xorm:"decimal(10,2) comment('钱')"`
 	Salary    float32
 	Salary2   float64
 	Status    uint8    `xorm:"tinyint(1) notnull default 0 comment('状态')"`

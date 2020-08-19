@@ -13,7 +13,7 @@ import (
 func main() {
 
 	driverName:="mysql"
-	dataSourceName:="root:root@tcp(127.0.0.1:3306)/gwp?charset=utf8&parseTime=true"
+	dataSourceName:="root:root@tcp(127.0.0.1:3306)/gwp?charset=utf8mb4&parseTime=true"
 	//创建引擎
 	engine, err := xorm.NewEngine(driverName, dataSourceName)
 	if err !=nil{
