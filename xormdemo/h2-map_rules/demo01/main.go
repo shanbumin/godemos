@@ -34,6 +34,7 @@ type Student struct {
 	Salary2   float64
 	Status    uint8    `xorm:"tinyint(1) notnull default 0 comment('状态')"`
 	File      []uint8  `xorm:"comment('文件流')"`
+	File2      []byte  `xorm:"comment('文件流2')"`
 	Alived    bool      `xorm:"notnull default 0 comment('活着吗')"`
 	//行为符特训
 	Version   int64   `xorm:"version"` //todo 这个Field将会在insert时默认为1，每次更新自动加1
