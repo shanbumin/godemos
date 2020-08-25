@@ -11,7 +11,7 @@ import "github.com/robfig/cron"
 func main() {
 	//返回某个任务的下次调度时间，如果为0，则任务将不会运行
 	//注意一个任务可能绑定了多个定时器规则，我们需要循环计算出最近的那次额
-	//@reviser  sam@2019-07-27 09:24:15
+
 	   rules:=[]string{"*/30 * * * * *","*/25 * * * * *","*/5 * * * * *"}
 	   fmt.Println("当前时间：",time.Now().Format("2006-01-02 15:04:05"))
 	    nextTime := time.Time{}
