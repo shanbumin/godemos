@@ -1,0 +1,80 @@
+请务必先熟悉 cron表达式原理
+sam@2019-07-16 09:56:53
+
+
+1.linux  cron基本格式
+
+一个cron表达式通过5部分来设置一个定时器:
+
+Field name   | Mandatory? | Allowed values  | Allowed special characters
+----------   | ---------- | --------------  | --------------------------
+Minutes      | Yes        | 0-59            | * / , -
+Hours        | Yes        | 0-23            | * / , -
+Day of month | Yes        | 1-31            | * / , - ?
+Month        | Yes        | 1-12 or JAN-DEC | * / , -
+Day of week  | Yes        | 0-6 or SUN-SAT  | * / , - ?
+
+例如：
+
+*              *          *           *         *           Command
+
+分(0-59)     时(0-23)   日(1-31)    月(1-12)   星期(0-7)
+
+
+minute： 表示分钟，可以是从0到59之间的任何整数。
+hour：表示小时，可以是从0到23之间的任何整数。
+day：表示日期，可以是从1到31之间的任何整数。
+month：表示月份，可以是从1到12之间的任何整数。
+week：表示星期几，可以是从0到7之间的任何整数，这里的0或7代表星期日。
+command：要执行的命令，可以是系统命令，也可以是自己编写的脚本文件。
+
+
+
+
+2.cron常见用法
+
+注意：这里并不是从你配置开始起每5分钟，而就是每个小时的第5 10  15 ...分钟，cron有自己的算法
+
+每隔5分钟执行1次:         */5      *       *    *    *           /bin/echo   hello  >/tmp/tst.log
+每天10点,21点整执行1次     0     10,21      *    *    *          /bin/echo "hi sam"
+第1-5分钟执行5次          1-5      *       *    *    *           /usr/local/php artisan  wechat:test
+
+
+3.cron实现的底层原理 （枚举，不符合要求右边进一位，继续枚举）
+
+略，如果不了解，请看下相关的cron开源库，golang与php皆可
+
+
+
+
+4.robfig/cron  在linux的cron基本格式之上开创了属于自己的替代格式：
+
+
+
+Field name   | Mandatory? | Allowed values  | Allowed special characters         是否必须
+----------   | ---------- | --------------  | ---------------------------------------------
+Seconds      | Yes        | 0-59            | * / , -                   |          Y
+Minutes      | Yes        | 0-59            | * / , -                   |          Y
+Hours        | Yes        | 0-23            | * / , -                   |          Y
+Day of month | Yes        | 1-31            | * / , - ?                 |          Y
+Month        | Yes        | 1-12 or JAN-DEC | * / , -                   |          Y
+Day of week  | Yes        | 0-6 or SUN-SAT  | * / , - ?                 |          N
+注：
+1）月(Month)和星期(Day of week)字段的值不区分大小写，如：SUN、Sun 和 sun 是一样的。
+2）星期 (Day of week)字段如果没提供，相当于是 *
+
+
+
+5.robfig/cron  预定义的表达式
+
+Entry                  | Description                                | Equivalent To
+-----                  | -----------                                | -------------
+@yearly (or @annually) | Run once a year, midnight, Jan. 1st        | 0 0 1 1 *
+@monthly               | Run once a month, midnight, first of month | 0 0 1 * *
+@weekly                | Run once a week, midnight between Sat/Sun  | 0 0 * * 0
+@daily (or @midnight)  | Run once a day, midnight                   | 0 0 * * *
+@hourly                | Run once an hour, beginning of hour        | 0 * * * *
+
+
+
+
