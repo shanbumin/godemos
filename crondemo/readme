@@ -77,4 +77,7 @@ Entry                  | Description                                | Equivalent
 
 
 
+todo  Job是带有一个Run方法的接口类型，经过代码分析可以指定，cron定时调度时间到达时，将调用此方法，
+      也就是意味着，任何实现了Run方法的实例，都可以作为AddJob函数的cmd参数，而Run方法所实现的内容
+      就是你定时调度所需执行的任务
 
