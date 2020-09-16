@@ -12,7 +12,7 @@ func main() {
 		err error
 	)
 	// 生成Cmd
-	cmd = exec.Command("/bin/bash", "-c", "exit(0)")
+	cmd = exec.Command("/bin/bash", "-c", "echo 111;echo 2222")
 	// 执行了命令, 捕获了子进程的输出( pipe )
 	if output, err = cmd.CombinedOutput(); err != nil {
 		fmt.Println("err:",err)
