@@ -1,0 +1,6 @@
+go install
+
+greet
+
+greet help
+

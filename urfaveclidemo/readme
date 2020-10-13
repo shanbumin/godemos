@@ -1,0 +1,12 @@
+相信只要部署过线上服务，都知道启动参数一定是必不可少的，当你在不同的网络、硬件、软件环境下去启动一个服务的时候，
+总会有一些启动参数是不确定的，这时候就需要通过命令行模块去解析这些参数，urfave/cli是Golang中一个简单实用的命令行工具。
+
+
+
+
+https://github.com/urfave/cli
+
+
+https://github.com/urfave/cli/blob/master/docs/v1/manual.md   [v1版本手册]
+
+
