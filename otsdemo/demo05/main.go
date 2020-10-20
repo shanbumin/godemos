@@ -9,7 +9,7 @@ import (
 func main() {
 	//1.初始化对接
 	client:=tablestore.NewClient(sample.EndPoint, sample.InstanceName,sample.AccessKeyId, sample.AccessKeySecret)
-	//2.列出表名称
-	//todo 使用ListTable接口获取当前实例下已创建的所有表的表名。
-	sample.ListTableSample(client)
+	//2.查询表描述信息
+	//todo 使用DescribeTable接口可以查询指定表的结构、预留读/写吞吐量详情等信息。
+	sample.DescribeTableSample(client,"t1")
 }

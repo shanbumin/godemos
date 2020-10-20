@@ -1,7 +1,7 @@
 package sample
 import (
 	"fmt"
-	"github.com/aliyun/aliyun-tablestore-go-sdk/tablestore"
+	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
 )
 
 //创建表1
@@ -115,6 +115,43 @@ func ListTableSample(client *tablestore.TableStoreClient) {
 	}
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+//通过表名查询表描述信息。
+//DescribeTable(request *DescribeTableRequest) (*DescribeTableResponse, error)
+
+func DescribeTableSample(client *tablestore.TableStoreClient, tableName string) {
+
+
+	//1.DescribeTableRequest
+	describeTableReq := new(tablestore.DescribeTableRequest)
+	describeTableReq.TableName = tableName
+
+	//2.DescribeTable
+	describ, err := client.DescribeTable(describeTableReq)
+
+	fmt.Printf("%#v\r\n",describ)
+	if err != nil {
+		fmt.Println("failed to update table with error:", err)
+	} else {
+		fmt.Println("DescribeTableSample finished. Table meta:", describ.TableOption.MaxVersion, describ.TableOption.TimeToAlive)
+	}
+}
+
+//--------------------------------------------------------------------------------
+func AddDefinedColumn(client *tablestore.TableStoreClient, tableName string) {
+
+	addDefinedColumnRequest := new(tablestore.AddDefinedColumnRequest)
+	addDefinedColumnRequest.AddDefinedColumn("definedColumnName01",tablestore.DefinedColumn_STRING)
+	addDefinedColumnRequest.AddDefinedColumn("definedColumnName02",tablestore.DefinedColumn_INTEGER)
+	addDefinedColumnRequest.AddDefinedColumn("definedColumnName03",tablestore.DefinedColumn_STRING)
+	addDefinedColumnRequest.TableName = "sampleTable"
+	_, err := client.AddDefinedColumn(addDefinedColumnRequest)
+	if (err != nil) {
+		fmt.Println("Failed to Add DefinedColumn with error:", err)
+	} else {
+		fmt.Println("Add DefinedColumn finished")
+	}
+}
 
 
 
@@ -194,17 +231,7 @@ func DeleteTableSample(client *tablestore.TableStoreClient) {
 }
 
 
-func DescribeTableSample(client *tablestore.TableStoreClient, tableName string) {
-	fmt.Println("DescribeTableSample started")
-	describeTableReq := new(tablestore.DescribeTableRequest)
-	describeTableReq.TableName = tableName
-	describ, err := client.DescribeTable(describeTableReq)
-	if err != nil {
-		fmt.Println("failed to update table with error:", err)
-	} else {
-		fmt.Println("DescribeTableSample finished. Table meta:", describ.TableOption.MaxVersion, describ.TableOption.TimeToAlive)
-	}
-}
+
 func ComputeSplitPointsBySize(client *tablestore.TableStoreClient, tableName string) {
 	req := &tablestore.ComputeSplitPointsBySizeRequest{TableName: tableName, SplitSize: int64(1)}
 	va, err := client.ComputeSplitPointsBySize(req)
