@@ -14,5 +14,5 @@ func main() {
 	//todo 设置预定义列后，在创建全局二级索引时将预定义列作为索引表的索引列或者属性列。
 
 
-	sample.DescribeTableSample(client,"t1")
+	sample.AddDefinedColumn(client,"t1")
 }

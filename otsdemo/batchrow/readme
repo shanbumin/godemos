@@ -1,0 +1,3 @@
+表格存储提供了BatchWriteRow、BatchGetRow、GetRange等多行操作的接口。
+
+

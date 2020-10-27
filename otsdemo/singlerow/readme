@@ -1,0 +1,5 @@
+表格存储提供了PutRow、GetRow、UpdateRow和DeleteRow等单行操作的接口。
+
+
+
+
