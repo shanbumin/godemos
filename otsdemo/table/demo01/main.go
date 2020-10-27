@@ -19,6 +19,9 @@ func main() {
     //todo 创建数据表（不带索引）
     //todo 创建一个含有2个主键列，预留读/写吞吐量为(0, 0)的数据表。
     sample.CreateTableSample(start.Client,sample.TableName)
+    //创建数据表(带索引)  todo 注意这里的索引类型是全局二级索引，索引名是全局唯一的
+	sample.CreateTableWithGlobalIndexSample(start.Client,sample.TableName2,sample.IndexName)
+
 }
 
 

@@ -1,27 +1,11 @@
 package main
 
-import (
-	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
-	"otsdemo/sample"
-)
 
-
+//局部事务
+//todo 使用局部事务功能，创建数据范围在一个分区键值内的局部事务。对局部事务中的数据进行读写操作后，可以根据实际提交或者丢弃局部事务。
+//todo 目前局部事务功能处于邀测中，默认关闭。如果需要使用该功能，请提交工单进行申请或者加入钉钉群23307953（表格存储技术交流群-2）进行咨询。
+//todo 使用局部事务可以指定某个分区键值内的操作是原子的，对分区键值内的数据进行的操作要么全部成功要么全部失败，并且所提供的隔离级别为串行化。
 
 func main() {
-
-
-	//1.初始化对接
-	client:=tablestore.NewClient(sample.EndPoint, sample.InstanceName,sample.AccessKeyId, sample.AccessKeySecret)
-	//2.主键列自增
-	//todo 设置非分区键的主键列为自增列后，在写入数据时，无需为自增列设置具体值，表格存储会自动生成自增列的值。该值在分区键级别唯一且严格递增。
-
-	//使用方法
-	//创建表时，将非分区键的主键列设置为自增列。
-	//只有整型的主键列才能设置为自增列，系统自动生成的自增列值为64位的有符号整型。
-	//写入数据时，无需为自增列设置具体值，只需将相应主键指定为自增主键。
-	//如果需要获取写入数据后系统自动生成的自增列的值，将ReturnType设置为RT_PK，可以在数据写入成功后返回自增列的值。
-	//查询数据时，需要完整的主键值。通过设置PutRow、UpdateRow或者BatchWriteRow中的ReturnType为RT_PK可以获取完整的主键值。
-	//sample.CreateTableKeyAutoIncrementSample(client,"t11")
-	sample.PutRowWithKeyAutoIncrementSample(client,"t11")
 
 }
