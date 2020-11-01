@@ -8,10 +8,14 @@ package sample
 
 //全局二级索引表
 
-const GSI1  =  "sbm_gsi1"
-const GSI1CalledNumberIndex ="sbm_gsi1_called_number_index"
-const GSI1BaseStationNumber1Index ="sbm_gsi1_base_station_number1_index"
-const GSI1BaseStationNumber2Index ="sbm_gsi1_base_station_number2_index"
+const GSI1Table  =  "sbm_call_record"
+const GSI1CalledNumberIndex =GSI1Table+"_gsi_called_number"
+const GSI1BaseStationNumber1Index =GSI1Table+"_gsi_base_station_number1"
+const GSI1BaseStationNumber2Index =GSI1Table+"_gsi_base_station_number2"
+
+const GSI2Table  =  "sbm_global_secondary_index"
+const GSI2Definedcol1Index  = GSI2Table+"_gsi_definedcol1"
+
 
 //sdk操作相关表
 const BatchName  =  "sbm_batch"
@@ -38,7 +42,7 @@ const IndexName  =  "sbm_table2_indexSample"
 const SingleName = "sbm_single"
 
 const SearchIndexName  = "sbm_search_index"
-const GlobalIndexName  = "sbm_global_index"
+
 
 
 const SearchIndex1 ="idx001"
