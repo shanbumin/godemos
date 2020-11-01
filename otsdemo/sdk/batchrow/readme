@@ -1,0 +1,8 @@
+https://help.aliyun.com/document_detail/52265.html?spm=a2c4g.11186623.6.912.4b6741a0Xisfrn
+
+
+1.批量写（BatchWriteRow）  ===>数据表
+2.批量读（BatchGetRow）   ====>数据表
+3.范围读（GetRange）      ====>数据表
+
+

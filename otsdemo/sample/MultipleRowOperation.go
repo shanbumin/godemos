@@ -4,40 +4,55 @@ import (
 	"fmt"
 	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
 	"math/rand"
+	"strconv"
 	"time"
 )
 
 
 // 对多个数据表中的多行数据进行增加、删除或者更新操作。
-// @param BatchWriteRowRequest             执行BatchWriteRow操作所需参数的封装。
-// @return  BatchWriteRowResponse          BatchWriteRow操作的响应内容。
+//todo 当服务端检查到某些操作出现参数错误时，BatchWriteRow接口可能会抛出参数错误的异常，此时该请求中所有的操作都未执行。
+
+//由于批量写入可能存在部分行失败的情况，失败行的Index及错误信息在返回的BatchWriteRowResponse中，但并不抛出异常。
+//因此调用BatchWriteRow接口时，需要检查返回值，判断每行的状态是否成功；如果不检查返回值，则可能会忽略掉部分操作的失败。
 func BatchWriteRowSample(client *tablestore.TableStoreClient, tableName string) {
 	batchWriteReq := &tablestore.BatchWriteRowRequest{}
 
-	for i := 0; i < 100; i++ {
-		//PrimaryKey
+	//循环构建单个PutRow,并追加到batchWriteReq中
+	for i := 0; i < 200; i++ {
+		putRowChange := new(tablestore.PutRowChange)
+		//1.表名
+		putRowChange.TableName = tableName
+		//2.主键
 		putPk := new(tablestore.PrimaryKey)
 		putPk.AddPrimaryKeyColumn("pk1", "pk1value1")
 		putPk.AddPrimaryKeyColumn("pk2", int64(i))
 		putPk.AddPrimaryKeyColumn("pk3", []byte("pk3"))
-		//PutRowChange
-		putRowChange := new(tablestore.PutRowChange)
-		putRowChange.TableName = tableName
 		putRowChange.PrimaryKey = putPk
+		//3.属性列
 		putRowChange.AddColumn("col1", "fixvalue")
+		putRowChange.AddColumn("col2", "test"+strconv.Itoa(i))
+		//4.条件更新
 		putRowChange.SetCondition(tablestore.RowExistenceExpectation_IGNORE)
-		//AddRowChange
+
+
 		batchWriteReq.AddRowChange(putRowChange)
 	}
-
-	//BatchWriteRow
+    //todo 一次调用接口限制在200行
 	response, err := client.BatchWriteRow(batchWriteReq)
 	if err != nil {
-		fmt.Println("batch request failed with:", response)
+		fmt.Println("batch request failed with:", response,err)
 	} else {
-		// todo check all succeed
+		//fmt.Printf("%#v\r\n",response.ResponseInfo)
+
+		for _,v:=range response.TableToRowsResult{ //k是表名，因为支持批量操作不同的表
+			for k1,v1:=range v{
+				fmt.Println(k1,v1.IsSucceed,v1.Error)
+			}
+		}
 		fmt.Println("batch write row finished")
 	}
+
+
 }
 
 
@@ -49,6 +64,7 @@ func BatchGetRowSample(client *tablestore.TableStoreClient, tableName string) {
 	batchGetReq := &tablestore.BatchGetRowRequest{}
 	mqCriteria := &tablestore.MultiRowQueryCriteria{}
 
+	//一、批量设置读取行
 	for i := 0; i < 20; i++ {
 		pkToGet := new(tablestore.PrimaryKey)
 		pkToGet.AddPrimaryKeyColumn("pk1", "pk1value1")
@@ -56,16 +72,22 @@ func BatchGetRowSample(client *tablestore.TableStoreClient, tableName string) {
 		pkToGet.AddPrimaryKeyColumn("pk3", []byte("pk3"))
 		mqCriteria.AddRow(pkToGet)
 	}
-
+    //二、手动设置读取的一行
 	pkToGet2 := new(tablestore.PrimaryKey)
 	pkToGet2.AddPrimaryKeyColumn("pk1", "pk1value2")
 	pkToGet2.AddPrimaryKeyColumn("pk2", int64(300))
 	pkToGet2.AddPrimaryKeyColumn("pk3", []byte("pk3"))
-	mqCriteria.AddColumnToGet("col1")
 	mqCriteria.AddRow(pkToGet2)
 
+
+    //设置读取的列
+	mqCriteria.AddColumnToGet("col1")
+	//版本数
 	mqCriteria.MaxVersion = 1
+	//表名
 	mqCriteria.TableName = tableName
+
+	//批量查询
 	batchGetReq.MultiRowQueryCriteria = append(batchGetReq.MultiRowQueryCriteria, mqCriteria)
 
 	/*
@@ -99,64 +121,53 @@ func BatchGetRowSample(client *tablestore.TableStoreClient, tableName string) {
 //todo 数据表中的行按主键从小到大排序，读取范围是一个左闭右开的区间，正序读取时，返回的是大于等于起始主键且小于结束主键的所有的行。
 //todo 同一表中有两个主键A和B，A<B。如正序读取[A, B)，则按从A至B的顺序返回主键大于等于A、小于B的行；逆序读取[B, A)，则按从B至A的顺序返回大于A、小于等于B的数据。
 func GetRangeSample(client *tablestore.TableStoreClient, tableName string) {
-	fmt.Println("Begin to scan the table")
+	getRangeRequest := &tablestore.GetRangeRequest{}
+	rangeRowQueryCriteria := &tablestore.RangeRowQueryCriteria{}
 
-
-    //1.StartPrimaryKey表示起始主键，如果该行存在，则返回结果中一定会包含此行。
+	//1.数据表名称。
+	rangeRowQueryCriteria.TableName = tableName
+    //2.本次范围读取的起始主键 StartPrimaryKey表示起始主键，如果该行存在，则返回结果中一定会包含此行。
 	startPK := new(tablestore.PrimaryKey)
 	startPK.AddPrimaryKeyColumnWithMinValue("pk1")
 	startPK.AddPrimaryKeyColumnWithMinValue("pk2")
 	startPK.AddPrimaryKeyColumnWithMinValue("pk3")
-	//2.EndPrimaryKey表示结束主键，无论该行是否存在，返回结果中都不会包含此行。
+	rangeRowQueryCriteria.StartPrimaryKey = startPK
+	//3.本次范围读取的结束主键 EndPrimaryKey表示结束主键，无论该行是否存在，返回结果中都不会包含此行。
 	endPK := new(tablestore.PrimaryKey)
 	endPK.AddPrimaryKeyColumnWithMaxValue("pk1")
 	endPK.AddPrimaryKeyColumnWithMaxValue("pk2")
 	endPK.AddPrimaryKeyColumnWithMaxValue("pk3")
-	//3.rangeRowQueryCriteria
-	rangeRowQueryCriteria := &tablestore.RangeRowQueryCriteria{}
-	rangeRowQueryCriteria.TableName = tableName
-	rangeRowQueryCriteria.StartPrimaryKey = startPK
 	rangeRowQueryCriteria.EndPrimaryKey = endPK
+	//4.读取方向。
 	rangeRowQueryCriteria.Direction = tablestore.FORWARD
+	//5.最多读取的版本数。
 	rangeRowQueryCriteria.MaxVersion = 1
+	//6.数据的最大返回行数，此值必须大于 0。
 	rangeRowQueryCriteria.Limit = 10
 
-	//4.getRangeRequest
-	getRangeRequest := &tablestore.GetRangeRequest{}
-	getRangeRequest.RangeRowQueryCriteria = rangeRowQueryCriteria
 
-	//5.GetRange
+	getRangeRequest.RangeRowQueryCriteria = rangeRowQueryCriteria
 	getRangeResp, err := client.GetRange(getRangeRequest)
-	//fmt.Println("get range result is ", getRangeResp)
-	//6.遍历结果
+
+	fmt.Println("get range result is " ,getRangeResp)
+
 	for {
 		if err != nil {
 			fmt.Println("get range failed with error:", err)
 		}
-		if len(getRangeResp.Rows) > 0 {
-			for _, row := range getRangeResp.Rows {
-				fmt.Println("range get row with key", row.PrimaryKey.PrimaryKeys[0].Value,
-					row.PrimaryKey.PrimaryKeys[1].Value,
-					row.PrimaryKey.PrimaryKeys[2].Value)
-			}
-			if getRangeResp.NextStartPrimaryKey == nil {
-				break
-			} else {
-				fmt.Println("next pk is :", getRangeResp.NextStartPrimaryKey.PrimaryKeys[0].Value,
-					getRangeResp.NextStartPrimaryKey.PrimaryKeys[1].Value,
-					getRangeResp.NextStartPrimaryKey.PrimaryKeys[2].Value)
-
-				getRangeRequest.RangeRowQueryCriteria.StartPrimaryKey = getRangeResp.NextStartPrimaryKey
-				getRangeResp, err = client.GetRange(getRangeRequest)
-			}
-		} else {
-			break
+		for _, row := range getRangeResp.Rows {
+			fmt.Println("range get row with key", row.PrimaryKey.PrimaryKeys[0].Value, row.PrimaryKey.PrimaryKeys[1].Value, row.PrimaryKey.PrimaryKeys[2].Value)
 		}
-
+		if getRangeResp.NextStartPrimaryKey == nil {
+			break
+		} else {
+			fmt.Println("next pk is :", getRangeResp.NextStartPrimaryKey.PrimaryKeys[0].Value, getRangeResp.NextStartPrimaryKey.PrimaryKeys[1].Value, getRangeResp.NextStartPrimaryKey.PrimaryKeys[2].Value)
+			getRangeRequest.RangeRowQueryCriteria.StartPrimaryKey = getRangeResp.NextStartPrimaryKey
+			getRangeResp, err = client.GetRange(getRangeRequest)
+		}
 		fmt.Println("continue to query rows")
 	}
-	fmt.Println("putrow finished")
-
+	fmt.Println("range get row finished")
 }
 
 

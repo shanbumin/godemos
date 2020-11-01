@@ -1,0 +1,7 @@
+config --endpoint https://tulong.cn-shanghai.ots.aliyuncs.com  --instance ?  --id  ? --key  ?
+
+
+
+
+create -t  sbm_students  --input  /Users/sam/docker-compose/sam/wwwroot/learn/godemos/otsdemo/cli/sbm_students
+

@@ -12,25 +12,29 @@ import (
 
 //创建测试表
 func CreateDemoTable(client *tablestore.TableStoreClient, tableName string){
-    //TableMeta
+
+	createTableRequest := new(tablestore.CreateTableRequest)
+	//1.TableMeta
 	tableMeta := new(tablestore.TableMeta)
 	tableMeta.TableName = tableName
 	tableMeta.AddPrimaryKeyColumn("pk1", tablestore.PrimaryKeyType_STRING)
-	//TableOption
+	createTableRequest.TableMeta = tableMeta
+
+	//2.TableOption
 	tableOption := new(tablestore.TableOption)
 	tableOption.TimeToAlive = -1
 	tableOption.MaxVersion = 1
+	createTableRequest.TableOption = tableOption
+
+	//3.ReservedThroughput
 	reservedThroughput := new(tablestore.ReservedThroughput)
 	reservedThroughput.Readcap = 0
 	reservedThroughput.Writecap = 0
-	//CreateTableRequest
-	createtableRequest := new(tablestore.CreateTableRequest)
-	createtableRequest.TableMeta = tableMeta
-	createtableRequest.TableOption = tableOption
-	createtableRequest.ReservedThroughput = reservedThroughput
+	createTableRequest.ReservedThroughput = reservedThroughput
+
 
 	//CreateTable
-	_, err := client.CreateTable(createtableRequest)
+	_, err := client.CreateTable(createTableRequest)
 	if err != nil {
 		fmt.Println("Failed to create table with error:", err)
 	} else {

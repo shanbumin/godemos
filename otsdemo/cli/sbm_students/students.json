@@ -1,0 +1,26 @@
+{
+  "Name": "sbm_students",
+  "Meta": {
+    "Pk": [
+      {
+        "C": "uid",
+        "T": "string",
+        "Opt": "none"
+      }
+    ],
+    "Defined": null
+  },
+  "Option": {
+    "TTL": -1,
+    "Version": 1
+  },
+  "CU": {
+    "Read": 0,
+    "Write": 0
+  },
+  "Stream": {
+    "Enable": false,
+    "Expire": 0
+  },
+  "Index": null
+}
