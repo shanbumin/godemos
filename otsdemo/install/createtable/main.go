@@ -12,15 +12,17 @@ import (
 //todo 创建数据表的时候是可以同时创建全局二级索引表的，但多元索引表需要后期创建
 //todo  全局二级索引是创建数据表的一个组成项(属性)
 func main() {
-	    tableName:=sample.DemoTableName
+	    tableName:=sample.DemoTable
 	    //gsindex01:="gs_name_index"
 	    client:= bootstrap.Client
 		createTableRequest := new(tablestore.CreateTableRequest)
 		//1.TableMeta
 		tableMeta := new(tablestore.TableMeta)
 		tableMeta.TableName = tableName
-		tableMeta.AddPrimaryKeyColumn("_id", tablestore.PrimaryKeyType_STRING)
+		tableMeta.AddPrimaryKeyColumn("appid", tablestore.PrimaryKeyType_STRING) //应用ID
+		tableMeta.AddPrimaryKeyColumn("openid", tablestore.PrimaryKeyType_STRING) //用户ID
 	    tableMeta.AddDefinedColumn("name", tablestore.DefinedColumn_STRING) //添加预定义列  姓名
+	    //tableMeta.AddDefinedColumn("tags", tablestore.DefinedColumn_STRING) //标签
 	    tableMeta.AddDefinedColumn("age", tablestore.DefinedColumn_INTEGER) //年龄
 	    tableMeta.AddDefinedColumn("salary",tablestore.DefinedColumn_DOUBLE) //薪水
 	    tableMeta.AddDefinedColumn("married",tablestore.DefinedColumn_BOOLEAN) //是否已婚
@@ -48,9 +50,6 @@ func main() {
 		reservedThroughput.Readcap = 0
 		reservedThroughput.Writecap = 0
 		createTableRequest.ReservedThroughput = reservedThroughput
-
-
-
 
 
 		

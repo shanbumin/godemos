@@ -1,9 +1,10 @@
-package sample
+package servers
 
 import (
 	"fmt"
 	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
 	"github.com/moka-mrp/sword-core/samutils"
+	"time"
 )
 
 
@@ -21,17 +22,19 @@ func PutRowSample(client *tablestore.TableStoreClient, tableName string) {
 	//设置的主键个数和类型必须和数据表的主键个数和类型一致。
 	//当主键为自增列时，只需将相应主键指定为自增主键。
 	putPk := new(tablestore.PrimaryKey)
-	putPk.AddPrimaryKeyColumn("pk1", "pk1value1")
-	putPk.AddPrimaryKeyColumn("pk2", int64(2))
-	putPk.AddPrimaryKeyColumn("pk3", []byte("pk3"))
+	putPk.AddPrimaryKeyColumn("appid", "wx32d84d8f87a72033")
+	putPk.AddPrimaryKeyColumn("openid","oVqItwN1CTLFCVd_KYtkeT8uUD_8")
 	putRowChange.PrimaryKey = putPk
 	//3.行的属性列Columns
-	putRowChange.AddColumn("col1", "col1data1")
-	putRowChange.AddColumn("col2", int64(3))
-	putRowChange.AddColumn("col3", []byte("test"))
+	putRowChange.AddColumn("name","judy") //name唯一
+	putRowChange.AddColumn("age",int64(28))
+	putRowChange.AddColumn("salary",float64(3000.28))
+	putRowChange.AddColumn("married",true)
+	putRowChange.AddColumn("desc",[]byte(samutils.RandStringWordL(5)))
+	putRowChange.AddColumn("created_at",int64(time.Now().Unix()))
+	putRowChange.AddColumn("updated_at",int64(time.Now().Unix()))
 	//4.使用条件更新，可以设置原行的存在性条件或者原行中某列的列值条件
 	putRowChange.SetCondition(tablestore.RowExistenceExpectation_IGNORE)
-
 
 
 	putRowRequest.PutRowChange = putRowChange
@@ -59,7 +62,8 @@ func GetRowSample(client *tablestore.TableStoreClient, tableName string) {
 	criteria.TableName = tableName
 	//2.行的主键
 	putPk := new(tablestore.PrimaryKey)
-	putPk.AddPrimaryKeyColumn("_id",samutils.Md5("sam11"))
+	putPk.AddPrimaryKeyColumn("appid", "wx32d84d8f87a72033")
+	putPk.AddPrimaryKeyColumn("openid","oVqItwN1CTLFCVd_KYtkeT8uUD_8")
 	criteria.PrimaryKey = putPk
 	//3.最多读取的版本数。
 	criteria.MaxVersion=1
@@ -71,9 +75,8 @@ func GetRowSample(client *tablestore.TableStoreClient, tableName string) {
 		fmt.Println("getrow failed with error:", err)
 	} else {
 		colmap := getResp.GetColumnMap().Columns
-
 		for k,v:= range colmap{
-            fmt.Println(k,v[0].Value) //值是多版本的，所以取第一个
+           fmt.Println(k,v[0].Value) //值是多版本的，所以取第一个
 		}
 		//fmt.Println("length is ", len(colmap.Columns))
 		//if len(colmap.Columns) >0{
@@ -97,18 +100,18 @@ func UpdateRowSample(client *tablestore.TableStoreClient, tableName string) {
 	updateRowChange.TableName = tableName
 	//2.行的主键
 	updatePk := new(tablestore.PrimaryKey)
-	updatePk.AddPrimaryKeyColumn("pk1", "pk1value1")
-	updatePk.AddPrimaryKeyColumn("pk2", int64(2))
-	updatePk.AddPrimaryKeyColumn("pk3", []byte("pk3"))
+	updatePk.AddPrimaryKeyColumn("appid", "wx32d84d8f87a72033")
+	updatePk.AddPrimaryKeyColumn("openid","oVqItwN1CTLFCVd_KYtkeT8uUD_8")
+
 	updateRowChange.PrimaryKey = updatePk
 	//3.行的属性列Columns
 	//todo a.增加或更新数据时，需要设置属性名、属性值、属性类型（可选）、时间戳（可选）。
 	//todo b.删除属性列特定版本的数据时，只需要设置属性名和时间戳。
 	//todo c.删除属性列时，只需要设置属性名
 	//todo d.说明 删除一行的全部属性列不等同于删除该行，如果需要删除该行，请使用DeleteRow操作。
-	updateRowChange.DeleteColumn("col1")
-	updateRowChange.PutColumn("col2", int64(77))
-	updateRowChange.PutColumn("col4", "newcol3")
+	updateRowChange.DeleteColumn("desc") //删除
+	updateRowChange.PutColumn("age", int64(29)) //修改
+	updateRowChange.PutColumn("sex", "female") //故意新增一行
 	//4.使用条件更新
 	updateRowChange.SetCondition(tablestore.RowExistenceExpectation_EXPECT_EXIST)
 
@@ -138,15 +141,16 @@ func DeleteRowSample(client *tablestore.TableStoreClient, tableName string) {
 
 	//2.行的主键
 	deletePk := new(tablestore.PrimaryKey)
-	deletePk.AddPrimaryKeyColumn("pk1", "pk1value1")
-	deletePk.AddPrimaryKeyColumn("pk2", int64(2))
-	deletePk.AddPrimaryKeyColumn("pk3", []byte("pk3"))
+	deletePk.AddPrimaryKeyColumn("appid", "wx32d84d8f87a72033")
+	deletePk.AddPrimaryKeyColumn("openid","oVqItwN1CTLFCVd_KYtkeT8uUD_8")
 	deleteRowReq.DeleteRowChange.PrimaryKey = deletePk
 
 	//3.条件更新
 	deleteRowReq.DeleteRowChange.SetCondition(tablestore.RowExistenceExpectation_EXPECT_EXIST)
 	clCondition1 := tablestore.NewSingleColumnCondition("col2", tablestore.CT_EQUAL, int64(3))
+	clCondition1.FilterIfMissing=true //列不存在的时候不允许通过，否则删除的行不存在这个字段也删除成功了
 	deleteRowReq.DeleteRowChange.SetColumnCondition(clCondition1)
+
 
 
 	_, err := client.DeleteRow(deleteRowReq)

@@ -1,7 +1,14 @@
 package sample
 
+//整体策划表
+const  DemoTable="sbm_demos" //测试表名
 
-
+//表结构操作相关的测试表
+const TestTable ="sbm_test"
+const Test2Table  = "sbm_test2"
+const Test2TableDefinedcol1Index  =  Test2Table+"_gsi_definedcol1"
+const Test3Table  ="sbm_table3" //主键自增测试
+const Test4Table  ="sbm_table4"  //用来测试条件更新
 
 
 
@@ -21,28 +28,8 @@ const BatchName  =  "sbm_batch"
 
 
 
-//整体策划表
-const  DemoTableName="sbm_demos" //测试表名
-
-//表结构操作相关的测试表
-const TestTable ="sbm_test"
-const Test2Table  = "sbm_test2"
-const Test2TableDefinedcol1Index  =  Test2Table+"_gsi_definedcol1"
-const Test3Table  ="sbm_table3" //主键自增测试
-const Test4Table  ="sbm_table4"  //用来测试条件更新
-
-
-
-
-
-
-
 const SingleName = "sbm_single"
-
 const SearchIndexName  = "sbm_search_index"
-
-
-
 const SearchIndex1 ="idx001"
 
 

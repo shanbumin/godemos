@@ -1,19 +1,14 @@
 package main
 
 import (
-	"otsdemo/sample"
 	"otsdemo/bootstrap"
+	"otsdemo/sample"
+	"otsdemo/singlerow/servers"
 )
 
 
 
-
-//pk1   string
-//pk2   integer
-//pk3   binary
-
-
 func main() {
 	//插入一行数据（PutRow）
-	sample.PutRowSample(bootstrap.Client,sample.TableConditionName)
+	servers.PutRowSample(bootstrap.Client,sample.DemoTable)
 }
