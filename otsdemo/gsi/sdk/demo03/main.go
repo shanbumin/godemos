@@ -3,9 +3,9 @@ package main
 import (
 	"otsdemo/gsi/sdk/servers"
 	"otsdemo/sample"
-	"otsdemo/sdk/start"
+	"otsdemo/bootstrap"
 )
 
 func main() {
-	servers.DeleteIndex(start.Client,sample.GSI2Table,sample.GSI2Definedcol1Index)
+	servers.DeleteIndex(bootstrap.Client,sample.GSI2Table,sample.GSI2Definedcol1Index)
 }

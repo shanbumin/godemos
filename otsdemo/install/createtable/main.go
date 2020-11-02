@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
 	"otsdemo/sample"
-	"otsdemo/sdk/start"
+	"otsdemo/bootstrap"
 )
 
 
@@ -14,7 +14,7 @@ import (
 func main() {
 	    tableName:=sample.DemoTableName
 	    //gsindex01:="gs_name_index"
-	    client:= start.Client
+	    client:= bootstrap.Client
 		createTableRequest := new(tablestore.CreateTableRequest)
 		//1.TableMeta
 		tableMeta := new(tablestore.TableMeta)

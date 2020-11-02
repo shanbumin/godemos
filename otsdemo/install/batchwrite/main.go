@@ -5,7 +5,7 @@ import (
 	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
 	"github.com/moka-mrp/sword-core/samutils"
 	"otsdemo/sample"
-	"otsdemo/sdk/start"
+	"otsdemo/bootstrap"
 	"strconv"
 	"time"
 )
@@ -52,7 +52,7 @@ func main() {
 
 			batchWriteReq.AddRowChange(putRowChange)
 		}
-		response, err := start.Client.BatchWriteRow(batchWriteReq)
+		response, err := bootstrap.Client.BatchWriteRow(batchWriteReq)
 		if err != nil {
 			fmt.Println("batch request failed with:", response)
 		} else {

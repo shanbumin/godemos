@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
 	"otsdemo/sample"
-	"otsdemo/sdk/start"
+	"otsdemo/bootstrap"
 )
 
 //查询号码123456的被叫话单。
@@ -38,7 +38,7 @@ func main()  {
 	rangeRowQueryCriteria.Limit = 10
 
 	getRangeRequest.RangeRowQueryCriteria = rangeRowQueryCriteria
-	getRangeResp, err := start.Client.GetRange(getRangeRequest)
+	getRangeResp, err := bootstrap.Client.GetRange(getRangeRequest)
 	for {
 		if err != nil {
 			fmt.Println("get range failed with error:", err)
@@ -58,7 +58,7 @@ func main()  {
 				break
 			} else {
 				getRangeRequest.RangeRowQueryCriteria.StartPrimaryKey = getRangeResp.NextStartPrimaryKey
-				getRangeResp, err = start.Client.GetRange(getRangeRequest)
+				getRangeResp, err = bootstrap.Client.GetRange(getRangeRequest)
 			}
 		} else {
 			break

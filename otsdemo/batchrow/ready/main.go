@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
 	"otsdemo/sample"
-	"otsdemo/sdk/start"
+	"otsdemo/bootstrap"
 )
 
 func main() {
@@ -33,7 +33,7 @@ func main() {
 
 
 
-	_,err:=start.Client.CreateTable(createTableRequest)
+	_,err:= bootstrap.Client.CreateTable(createTableRequest)
 	if err !=nil{
 		fmt.Println(err)
 	}else{

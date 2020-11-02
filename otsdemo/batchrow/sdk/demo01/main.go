@@ -1,9 +1,9 @@
 package main
 
 import (
-	"otsdemo/batchrow/prepare"
+	"otsdemo/batchrow/servers"
 	"otsdemo/sample"
-	"otsdemo/sdk/start"
+	"otsdemo/bootstrap"
 )
 
 
@@ -13,5 +13,5 @@ import (
 
 func main() {
 	//批量写
-	prepare.BatchWriteRowSample(start.Client,sample.BatchName)
+	servers.BatchWriteRowSample(bootstrap.Client,sample.BatchName)
 }

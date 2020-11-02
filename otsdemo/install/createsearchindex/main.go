@@ -5,14 +5,14 @@ import (
 	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
 	"github.com/golang/protobuf/proto"
 	"otsdemo/sample"
-	"otsdemo/sdk/start"
+	"otsdemo/bootstrap"
 )
 
 //创建多元索引
 func main() {
 	tableName:=sample.DemoTableName
 	indexName:=tableName+"_index"
-	client:= start.Client
+	client:= bootstrap.Client
 	request := &tablestore.CreateSearchIndexRequest{}
 	//1.数据表名称
 	request.TableName = tableName

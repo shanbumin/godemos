@@ -1,9 +1,9 @@
 package main
 
 import (
-	"otsdemo/batchrow/prepare"
+	"otsdemo/batchrow/servers"
 	"otsdemo/sample"
-	"otsdemo/sdk/start"
+	"otsdemo/bootstrap"
 )
 
 
@@ -11,5 +11,5 @@ import (
 
 func main() {
 	//范围读
-	prepare.GetRangeSample(start.Client,sample.BatchName)
+	servers.GetRangeSample(bootstrap.Client,sample.BatchName)
 }

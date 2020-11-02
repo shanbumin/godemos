@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
 	"otsdemo/sample"
-	"otsdemo/sdk/start"
+	"otsdemo/bootstrap"
 )
 
 //查询号码234567的所有主叫话单。
@@ -39,7 +39,7 @@ func main()  {
 	rangeRowQueryCriteria.Limit = 2
 
 	getRangeRequest.RangeRowQueryCriteria = rangeRowQueryCriteria
-	getRangeResp, err := start.Client.GetRange(getRangeRequest)
+	getRangeResp, err := bootstrap.Client.GetRange(getRangeRequest)
 
 	for {
 		if err != nil {
@@ -52,7 +52,7 @@ func main()  {
 			break
 		} else { // 若nextStartPrimaryKey不为nil, 则继续读取。
 			getRangeRequest.RangeRowQueryCriteria.StartPrimaryKey = getRangeResp.NextStartPrimaryKey
-			getRangeResp, err = start.Client.GetRange(getRangeRequest)
+			getRangeResp, err = bootstrap.Client.GetRange(getRangeRequest)
 		}
 		fmt.Println("continue to query rows")
 	}
