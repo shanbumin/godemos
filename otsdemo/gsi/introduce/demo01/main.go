@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
-	"otsdemo/sample"
+	"otsdemo/constants"
 	"otsdemo/bootstrap"
 )
 
@@ -20,7 +20,7 @@ func main()  {
 	rangeRowQueryCriteria := &tablestore.RangeRowQueryCriteria{}
 	cellNumber:=234567
 	//1.表名
-	rangeRowQueryCriteria.TableName = sample.GSI1Table
+	rangeRowQueryCriteria.TableName = constants.GSI1Table
     //2.构建开始主键
 	startPK := new(tablestore.PrimaryKey)
 	startPK.AddPrimaryKeyColumn("cell_number",int64(cellNumber))

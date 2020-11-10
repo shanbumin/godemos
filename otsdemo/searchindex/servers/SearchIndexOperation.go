@@ -1,4 +1,4 @@
-package sample
+package servers
 
 import (
 	"encoding/json"
@@ -10,81 +10,7 @@ import (
 )
 
 
-//创建测试表
-func CreateDemoTable(client *tablestore.TableStoreClient, tableName string){
 
-	createTableRequest := new(tablestore.CreateTableRequest)
-	//1.TableMeta
-	tableMeta := new(tablestore.TableMeta)
-	tableMeta.TableName = tableName
-	tableMeta.AddPrimaryKeyColumn("pk1", tablestore.PrimaryKeyType_STRING)
-	createTableRequest.TableMeta = tableMeta
-
-	//2.TableOption
-	tableOption := new(tablestore.TableOption)
-	tableOption.TimeToAlive = -1
-	tableOption.MaxVersion = 1
-	createTableRequest.TableOption = tableOption
-
-	//3.ReservedThroughput
-	reservedThroughput := new(tablestore.ReservedThroughput)
-	reservedThroughput.Readcap = 0
-	reservedThroughput.Writecap = 0
-	createTableRequest.ReservedThroughput = reservedThroughput
-
-
-	//CreateTable
-	_, err := client.CreateTable(createTableRequest)
-	if err != nil {
-		fmt.Println("Failed to create table with error:", err)
-	} else {
-		fmt.Println("Create table finished")
-	}
-
-}
-
-/**
- *创建一个SearchIndex，包含Col_Keyword和Col_Long两列，类型分别设置为字符串(KEYWORD)和整型(LONG)。
- */
-func CreateSearchIndex(client *tablestore.TableStoreClient, tableName string, indexName string) {
-
-
-	request := &tablestore.CreateSearchIndexRequest{}
-	//1.数据表名称
-	request.TableName = tableName
-	//2.多元索引名称
-	request.IndexName = indexName
-	//3.索引的结构信息  IndexSchema
-	//3.1 Index的所有字段的设置（FieldSchemas)
-	field1 := &tablestore.FieldSchema{
-		FieldName:        proto.String("Col_Keyword"),  // 设置字段名，使用proto.String用于获取字符串指针
-		FieldType:        tablestore.FieldType_KEYWORD, // 设置字段类型  字符串
-		Index:            proto.Bool(true),             // 设置开启索引
-		EnableSortAndAgg: proto.Bool(true),             // 设置开启排序与统计功能
-	}
-	field2 := &tablestore.FieldSchema{
-		FieldName:        proto.String("Col_Long"),
-		FieldType:        tablestore.FieldType_LONG, //长整型
-		Index:            proto.Bool(true),
-		EnableSortAndAgg: proto.Bool(true),
-	}
-	schemas := []*tablestore.FieldSchema{}
-	schemas = append(schemas, field1, field2)
-    //3.2 索引设置(IndexSetting)
-    //todo
-    //3.3 索引预排序设置(IndexSort)
-    //todo
-	request.IndexSchema = &tablestore.IndexSchema{
-		FieldSchemas: schemas,
-	}
-	//4.调用client创建SearchIndex
-	resp, err := client.CreateSearchIndex(request)
-	if err != nil {
-		fmt.Println("error :", err)
-		return
-	}
-	fmt.Println("CreateSearchIndex finished, requestId:", resp.ResponseInfo.RequestId)
-}
 
 
 //数据表名称，可以为空
@@ -160,14 +86,12 @@ func TermQuery(client *tablestore.TableStoreClient, tableName string, indexName 
 	//2.多元索引名称
 	searchRequest.SetIndexName(indexName)
 	//3.设置查询条件:SearchQuery
-	query := &search.TermQuery{}    // 设置查询类型为TermQuery
-	query.FieldName = "Col_Keyword" // 设置要匹配的字段
-	query.Term = "hangzhou"         // 设置要匹配的值
-
 	searchQuery := search.NewSearchQuery()
+	query := &search.TermQuery{}    // 设置查询类型为TermQuery
+	query.FieldName = "age" // 设置要匹配的字段
+	query.Term = 18      // 设置要匹配的值
 	searchQuery.SetQuery(query)
-	searchQuery.SetLimit(100)
-
+	searchQuery.SetLimit(100)      //本次查询需要返回的最大数量
 	searchRequest.SetSearchQuery(searchQuery)
 
 	//4.是否返回所有列，包含ReturnAll和Columns设置。
@@ -185,7 +109,7 @@ func TermQuery(client *tablestore.TableStoreClient, tableName string, indexName 
 	fmt.Println("IsAllSuccess: ", searchResponse.IsAllSuccess) // 查看返回结果是否完整
 	fmt.Println("RowCount: ", len(searchResponse.Rows))
 	for _, row := range searchResponse.Rows {
-		jsonBody, err := json.Marshal(row)
+		jsonBody, err := json.Marshal(row) //直接转成json吧
 		if err != nil {
 			panic(err)
 		}

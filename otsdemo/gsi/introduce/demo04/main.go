@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
-	"otsdemo/sample"
+	"otsdemo/constants"
 	"otsdemo/bootstrap"
 )
 
@@ -17,7 +17,7 @@ func main() {
 	startTime:=1532574861
 	endTime:=1532584054
 	//1.索引表表名
-	rangeRowQueryCriteria.TableName = sample.GSI1BaseStationNumber1Index
+	rangeRowQueryCriteria.TableName = constants.GSI1BaseStationNumber1Index
 	//2.开始主键
 	startPK := new(tablestore.PrimaryKey)
 	startPK.AddPrimaryKeyColumn("base_station_number",int64(baseStationNumber))
@@ -51,7 +51,7 @@ func main() {
 				//反查数据表-----
 				getRowRequest := new(tablestore.GetRowRequest)
 				criteria := new(tablestore.SingleRowQueryCriteria)
-				criteria.TableName = sample.GSI1Table
+				criteria.TableName = constants.GSI1Table
 				putPk := new(tablestore.PrimaryKey)
 				putPk.AddPrimaryKeyColumn("cell_number",mainCalledNumber)
 				putPk.AddPrimaryKeyColumn("start_time",callStartTime)

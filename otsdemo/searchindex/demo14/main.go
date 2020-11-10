@@ -2,12 +2,12 @@ package main
 
 import (
 	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
-	"otsdemo/sample"
+	"otsdemo/constants"
 )
 
 func main() {
 	//1.初始化对接
-	client:=tablestore.NewClient(sample.EndPoint, sample.InstanceName,sample.AccessKeyId, sample.AccessKeySecret)
+	client:=tablestore.NewClient(constants.EndPoint, constants.InstanceName, constants.AccessKeyId, constants.AccessKeySecret)
 	//2.多条件组合查询
 	_=client
 }

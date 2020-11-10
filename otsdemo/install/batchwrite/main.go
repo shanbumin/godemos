@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
 	"github.com/moka-mrp/sword-core/samutils"
-	"otsdemo/sample"
+	"otsdemo/constants"
 	"otsdemo/bootstrap"
 	"strconv"
 	"time"
@@ -40,7 +40,7 @@ func main() {
 		for j := 1; j <= 200; j++ {
 			putRowChange := new(tablestore.PutRowChange)
 			//1.TableName
-			putRowChange.TableName = sample.DemoTable
+			putRowChange.TableName = constants.DemoTable
 			//2.主键
 			name:="sam"+strconv.Itoa(i*j)
 			putPk := new(tablestore.PrimaryKey)

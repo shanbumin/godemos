@@ -2,7 +2,7 @@ package main
 
 import (
 	"otsdemo/bootstrap"
-	"otsdemo/sample"
+	"otsdemo/constants"
 	"otsdemo/table/servers"
 )
 
@@ -20,7 +20,7 @@ func main() {
 	//  如果需要获取写入数据后系统自动生成的自增列的值，将ReturnType设置为RT_PK，可以在数据写入成功后返回自增列的值。
 	//3.查询数据时，需要完整的主键值。通过设置PutRow、UpdateRow或者BatchWriteRow中的ReturnType为RT_PK可以获取完整的主键值。
 
-	servers.CreateTableKeyAutoIncrementSample(bootstrap.Client,sample.Test3Table) //创建表
-	servers.PutRowWithKeyAutoIncrementSample(bootstrap.Client,sample.Test3Table)  //写数据
+	servers.CreateTableKeyAutoIncrementSample(bootstrap.Client, constants.Test3Table) //创建表
+	servers.PutRowWithKeyAutoIncrementSample(bootstrap.Client, constants.Test3Table)  //写数据
 
 }

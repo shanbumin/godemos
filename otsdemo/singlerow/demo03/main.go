@@ -2,7 +2,7 @@ package main
 
 import (
 	"otsdemo/bootstrap"
-	"otsdemo/sample"
+	"otsdemo/constants"
 	"otsdemo/singlerow/servers"
 )
 
@@ -12,5 +12,5 @@ import (
 //todo 当UpdateRow请求中只包含删除指定的列且该行不存在时，则该请求不会新增一行数据。
 func main() {
 	//更新一行数据（UpdateRow）
-	servers.UpdateRowSample(bootstrap.Client,sample.DemoTable)
+	servers.UpdateRowSample(bootstrap.Client, constants.DemoTable)
 }

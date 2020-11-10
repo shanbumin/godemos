@@ -2,7 +2,7 @@ package main
 
 import (
 	"otsdemo/bootstrap"
-	"otsdemo/sample"
+	"otsdemo/constants"
 	"otsdemo/singlerow/servers"
 )
 
@@ -10,5 +10,5 @@ import (
 
 func main() {
 	//插入一行数据（PutRow）
-	servers.PutRowSample(bootstrap.Client,sample.DemoTable)
+	servers.PutRowSample(bootstrap.Client, constants.DemoTable)
 }

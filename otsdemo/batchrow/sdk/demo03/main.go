@@ -2,7 +2,7 @@ package main
 
 import (
 	"otsdemo/batchrow/servers"
-	"otsdemo/sample"
+	"otsdemo/constants"
 	"otsdemo/bootstrap"
 )
 
@@ -11,5 +11,5 @@ import (
 
 func main() {
 	//范围读
-	servers.GetRangeSample(bootstrap.Client,sample.BatchName)
+	servers.GetRangeSample(bootstrap.Client, constants.BatchTable)
 }

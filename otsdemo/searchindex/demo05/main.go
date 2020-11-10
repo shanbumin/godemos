@@ -1,8 +1,9 @@
 package main
 
 import (
-	"otsdemo/sample"
 	"otsdemo/bootstrap"
+	"otsdemo/constants"
+	"otsdemo/searchindex/servers"
 )
 
 
@@ -12,5 +13,5 @@ import (
 //已在数据表上创建多元索引。
 func main() {
 	//精确查询
-	sample.TermQuery(bootstrap.Client,sample.SearchIndexName,sample.SearchIndex1)
+	servers.TermQuery(bootstrap.Client, constants.DemoTable, constants.DemoTableIndex)
 }

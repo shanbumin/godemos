@@ -2,7 +2,7 @@ package main
 
 import (
 	"otsdemo/bootstrap"
-	"otsdemo/sample"
+	"otsdemo/constants"
 	"otsdemo/table/servers"
 )
 
@@ -19,9 +19,9 @@ import (
 func main() {
     //todo 创建数据表（不带索引）
     //todo 创建一个含有2个主键列，预留读/写吞吐量为(0, 0)的数据表。
-    servers.CreateTableSample(bootstrap.Client,sample.TestTable)
+    servers.CreateTableSample(bootstrap.Client, constants.TestTable)
     //创建数据表(带索引)  todo 注意这里的索引类型是全局二级索引，索引名是全局唯一的
-	servers.CreateTableWithGlobalIndexSample(bootstrap.Client,sample.Test2Table,sample.Test2TableDefinedcol1Index)
+	servers.CreateTableWithGlobalIndexSample(bootstrap.Client, constants.Test2Table, constants.Test2TableDefinedcol1Index)
 
 }
 

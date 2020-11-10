@@ -2,7 +2,7 @@ package main
 
 import (
 	"otsdemo/bootstrap"
-	"otsdemo/sample"
+	"otsdemo/constants"
 	"otsdemo/table/servers"
 )
 
@@ -30,9 +30,9 @@ updateRowChange.SetCondition( tablestore.RowExistenceExpectation_EXPECT_NOT_EXIS
 
 func main() {
 
-	servers.CreateTableConditionSample(bootstrap.Client,sample.Test4Table)
-	servers.PutRowWithConditionSample(bootstrap.Client,sample.Test4Table)
-	servers.ConditionRowUpdateSample(bootstrap.Client,sample.Test4Table)
-	servers.ConditionColUpdateSample(bootstrap.Client,sample.Test4Table)
+	servers.CreateTableConditionSample(bootstrap.Client, constants.Test4Table)
+	servers.PutRowWithConditionSample(bootstrap.Client, constants.Test4Table)
+	servers.ConditionRowUpdateSample(bootstrap.Client, constants.Test4Table)
+	servers.ConditionColUpdateSample(bootstrap.Client, constants.Test4Table)
 
 }

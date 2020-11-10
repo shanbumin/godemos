@@ -2,7 +2,7 @@ package main
 
 import (
 	"otsdemo/bootstrap"
-	"otsdemo/sample"
+	"otsdemo/constants"
 	"otsdemo/table/servers"
 )
 
@@ -13,7 +13,7 @@ import (
 func main() {
 
 	//删除数据表
-	servers.DeleteTableSample(bootstrap.Client,sample.TestTable)
+	servers.DeleteTableSample(bootstrap.Client, constants.TestTable)
 
 
 

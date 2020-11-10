@@ -3,7 +3,7 @@ package install
 import (
 	"fmt"
 	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
-	"otsdemo/sample"
+	"otsdemo/constants"
 )
 
 //private static final String INDEX0_NAME = "IndexOnBeCalledNumber";
@@ -32,20 +32,20 @@ func  CreateGSI1TableSample(client *tablestore.TableStoreClient, tableName strin
 	//todo 说明 系统会自动进行索引列补齐。即把数据表的主键添加到索引列后，共同作为索引表的主键，所以索引表中有三列主键。
 	indexMeta0 := new(tablestore.IndexMeta) //新建索引表Meta。
 	indexMeta0.AddPrimaryKeyColumn("called_number")
-	indexMeta0.IndexName = sample.GSI1CalledNumberIndex
+	indexMeta0.IndexName = constants.GSI1CalledNumberIndex
 	createTableRequest.AddIndexMeta(indexMeta0)
 
 	indexMeta1:=new(tablestore.IndexMeta)
 	indexMeta1.AddPrimaryKeyColumn("base_station_number")
 	indexMeta1.AddPrimaryKeyColumn("start_time")
-	indexMeta1.IndexName = sample.GSI1BaseStationNumber1Index
+	indexMeta1.IndexName = constants.GSI1BaseStationNumber1Index
 	createTableRequest.AddIndexMeta(indexMeta1)
 
 	indexMeta2:=new(tablestore.IndexMeta)
 	indexMeta2.AddPrimaryKeyColumn("base_station_number")
 	indexMeta2.AddPrimaryKeyColumn("start_time")
 	indexMeta2.AddDefinedColumn("duration")
-	indexMeta2.IndexName = sample.GSI1BaseStationNumber2Index
+	indexMeta2.IndexName = constants.GSI1BaseStationNumber2Index
 	createTableRequest.AddIndexMeta(indexMeta2)
 
 

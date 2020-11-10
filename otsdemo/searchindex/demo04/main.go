@@ -1,11 +1,12 @@
 package main
 
 import (
-	"otsdemo/sample"
 	"otsdemo/bootstrap"
+	"otsdemo/constants"
+	"otsdemo/searchindex/servers"
 )
 
 func main() {
 	//删除多元索引
-	sample.DeleteSearchIndex(bootstrap.Client,sample.SearchIndexName,sample.SearchIndex1)
+	servers.DeleteSearchIndex(bootstrap.Client, constants.DemoTable, constants.DemoTableIndex)
 }

@@ -2,7 +2,7 @@ package main
 
 import (
 	"otsdemo/bootstrap"
-	"otsdemo/sample"
+	"otsdemo/constants"
 	"otsdemo/table/servers"
 )
 
@@ -22,6 +22,6 @@ import (
 
 func main() {
 
-	servers.GetRowWithFilter(bootstrap.Client,sample.Test4Table)
-	servers.GetRowWithCompositeColumnValueFilter(bootstrap.Client,sample.Test4Table)
+	servers.GetRowWithFilter(bootstrap.Client, constants.Test4Table)
+	servers.GetRowWithCompositeColumnValueFilter(bootstrap.Client, constants.Test4Table)
 }

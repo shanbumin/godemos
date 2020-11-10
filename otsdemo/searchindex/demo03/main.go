@@ -1,11 +1,12 @@
 package main
 
 import (
-	"otsdemo/sample"
 	"otsdemo/bootstrap"
+	"otsdemo/constants"
+	"otsdemo/searchindex/servers"
 )
 
 func main() {
 	//查询多元索引描述信息
-	sample.DescribeSearchIndex(bootstrap.Client,sample.SearchIndexName,sample.SearchIndex1)
+	servers.DescribeSearchIndex(bootstrap.Client, constants.DemoTable, constants.DemoTableIndex)
 }

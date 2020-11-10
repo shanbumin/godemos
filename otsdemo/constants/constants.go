@@ -1,7 +1,12 @@
-package sample
+package constants
 
 //整体策划表
 const  DemoTable="sbm_demos" //测试表名
+const  DemoTableIndex=DemoTable+"_index"
+const DemoTableTunnel=DemoTable+"_tunnel"
+const DemoTableTunnel2=DemoTable+"_tunnel2"
+const  DemoTableTunnelID= "936c6260-3620-44ef-a62d-159d12df8ce8"
+const  DemoTableTunnel2ID= "3d0e08c7-4b20-4783-9978-f958fb3f3c97"
 
 //表结构操作相关的测试表
 const TestTable ="sbm_test"
@@ -24,13 +29,10 @@ const GSI2Definedcol1Index  = GSI2Table+"_gsi_definedcol1"
 
 
 //sdk操作相关表
-const BatchName  =  "sbm_batch"
+const BatchTable  =  "sbm_batch"
 
 
 
-const SingleName = "sbm_single"
-const SearchIndexName  = "sbm_search_index"
-const SearchIndex1 ="idx001"
 
 
 

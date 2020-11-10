@@ -2,10 +2,10 @@ package main
 
 import (
 	"otsdemo/gsi/sdk/servers"
-	"otsdemo/sample"
+	"otsdemo/constants"
 	"otsdemo/bootstrap"
 )
 
 func main() {
-	servers.DeleteIndex(bootstrap.Client,sample.GSI2Table,sample.GSI2Definedcol1Index)
+	servers.DeleteIndex(bootstrap.Client, constants.GSI2Table, constants.GSI2Definedcol1Index)
 }

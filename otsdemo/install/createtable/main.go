@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
-	"otsdemo/sample"
+	"otsdemo/constants"
 	"otsdemo/bootstrap"
 )
 
@@ -12,7 +12,7 @@ import (
 //todo 创建数据表的时候是可以同时创建全局二级索引表的，但多元索引表需要后期创建
 //todo  全局二级索引是创建数据表的一个组成项(属性)
 func main() {
-	    tableName:=sample.DemoTable
+	    tableName:= constants.DemoTable
 	    //gsindex01:="gs_name_index"
 	    client:= bootstrap.Client
 		createTableRequest := new(tablestore.CreateTableRequest)

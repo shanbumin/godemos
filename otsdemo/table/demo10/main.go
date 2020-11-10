@@ -2,7 +2,7 @@ package main
 
 import (
 	"otsdemo/bootstrap"
-	"otsdemo/sample"
+	"otsdemo/constants"
 	"otsdemo/table/servers"
 )
 
@@ -11,5 +11,5 @@ import (
 
 func main() {
 
-	   servers.UpdateRowWithIncrementColumn(bootstrap.Client,sample.Test4Table)
+	   servers.UpdateRowWithIncrementColumn(bootstrap.Client, constants.Test4Table)
 }

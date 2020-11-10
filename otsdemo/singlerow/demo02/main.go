@@ -2,7 +2,7 @@ package main
 
 import (
 	"otsdemo/bootstrap"
-	"otsdemo/sample"
+	"otsdemo/constants"
 	"otsdemo/singlerow/servers"
 )
 
@@ -13,7 +13,7 @@ import (
 //2.如果该行不存在，则返回中不包含行，并且不会报错。
 func main() {
 	//GetRow接口用于读取一行数据。
-	servers.GetRowSample(bootstrap.Client,sample.DemoTable)
+	servers.GetRowSample(bootstrap.Client, constants.DemoTable)
 
 
 }
