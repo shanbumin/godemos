@@ -125,14 +125,12 @@ func MatchAllQuery(client *tablestore.TableStoreClient, tableName string, indexN
 	//2.多元索引名称
 	searchRequest.SetIndexName(indexName)
 	//3.设置查询
-	query := &search.MatchAllQuery{}
 	searchQuery := search.NewSearchQuery()
+	query := &search.MatchAllQuery{}
 	searchQuery.SetQuery(query)
 	searchQuery.SetLimit(0) //如果只为了获取行数，无需获取具体数据，可以设置Limit=0，即不返回任意一行数据。
 	searchQuery.SetGetTotalCount(true) // 设置GetTotalCount为true后才会返回总条数
 	searchRequest.SetSearchQuery(searchQuery)
-
-
 
 
 	searchResponse, err := client.Search(searchRequest)
@@ -145,7 +143,7 @@ func MatchAllQuery(client *tablestore.TableStoreClient, tableName string, indexN
 }
 
 /**
- * 查询表中Col_Keyword这一列精确匹配"hangzhou"或"tablestore"的数据。
+ * 查询表中name这一列精确匹配""或"sam92或者sam63"的数据。
  */
 func TermsQuery(client *tablestore.TableStoreClient, tableName string, indexName string) {
 	searchRequest := &tablestore.SearchRequest{}
@@ -154,20 +152,21 @@ func TermsQuery(client *tablestore.TableStoreClient, tableName string, indexName
 	//2.多元索引名称。
 	searchRequest.SetIndexName(indexName)
 	//3.查询条件
-	query := &search.TermsQuery{}   // 设置查询类型为TermQuery
-	query.FieldName = "Col_Keyword" // 设置要匹配的字段
-	terms := make([]interface{}, 0)
-	terms = append(terms, "hangzhou")
-	terms = append(terms, "tablestore")
-	query.Terms = terms // 设置要匹配的值
 	searchQuery := search.NewSearchQuery()
+	query := &search.TermsQuery{}   // 设置查询类型为TermQuery
+	query.FieldName = "name" // 设置要匹配的字段
+	terms := make([]interface{}, 0)
+	terms = append(terms, "sam92")
+	terms = append(terms, "sam63")
+	query.Terms = terms // 设置要匹配的值
 	searchQuery.SetQuery(query)
 	searchQuery.SetLimit(100)
 	searchRequest.SetSearchQuery(searchQuery)
 
 	// 4.设置返回所有列
 	searchRequest.SetColumnsToGet(&tablestore.ColumnsToGet{
-		ReturnAll: true,
+		ReturnAll:false,
+		Columns:[]string{"name","age"},
 	})
 
 
@@ -436,8 +435,8 @@ func QueryRowsWithToken(client *tablestore.TableStoreClient, tableName string, i
 	querys := []search.Query{
 		&search.MatchAllQuery{},
 		&search.TermQuery{
-			FieldName: "Col_Keyword",
-			Term:      "tablestore",
+			FieldName: "name",
+			Term:      "sam7",
 		},
 	}
 	for _, query := range querys {
@@ -450,6 +449,9 @@ func QueryRowsWithToken(client *tablestore.TableStoreClient, tableName string, i
 		searchQuery.SetLimit(10)
 		searchQuery.SetGetTotalCount(true)
 		searchRequest.SetSearchQuery(searchQuery)
+
+
+
 		searchResponse, err := client.Search(searchRequest)
 		if err != nil {
 			fmt.Printf("%#v", err)
@@ -479,36 +481,49 @@ func QueryRowsWithToken(client *tablestore.TableStoreClient, tableName string, i
 
 
 /**
- *  查询表中Col_Keyword这一列的值能够匹配"hangzhou"的数据，返回匹配到的总行数和一些匹配成功的行。
+ *  查询表中desc这一列的值能够匹配"we"的数据，返回匹配到的总行数和一些匹配成功的行。
  */
 func MatchQuery(client *tablestore.TableStoreClient, tableName string, indexName string) {
 	searchRequest := &tablestore.SearchRequest{}
+
+	//1.数据表名称。
 	searchRequest.SetTableName(tableName)
+	//2.多元索引名称。
 	searchRequest.SetIndexName(indexName)
-	query := &search.MatchQuery{}   // 设置查询类型为MatchQuery
-	query.FieldName = "Col_Keyword" // 设置要匹配的字段
-	query.Text = "hangzhou"         // 设置要匹配的值
+	//3.设置查询类型为MatchQuery
 	searchQuery := search.NewSearchQuery()
+	query := &search.MatchQuery{}   // 设置查询类型为MatchQuery
+	query.FieldName = "desc" // 设置要匹配的字段
+	query.Text = "we"         // 设置要匹配的值
 	searchQuery.SetQuery(query)
 	searchQuery.SetOffset(0) // 设置offset为0
 	searchQuery.SetLimit(20) // 设置limit为20，表示最多返回20条数据
+	//searchQuery.SetGetTotalCount(true)
 	searchRequest.SetSearchQuery(searchQuery)
+
+
+   //查询一:不设置columnsToGet，默认只返回主键
 	searchResponse, err := client.Search(searchRequest)
 	if err != nil { // 判断异常
 		fmt.Printf("%#v", err)
 		return
 	}
 	fmt.Println("IsAllSuccess: ", searchResponse.IsAllSuccess) // 查看返回结果是否完整
-	fmt.Println("TotalCount: ", searchResponse.TotalCount)     // 匹配的总行数
+	fmt.Println("TotalCount: ", searchResponse.TotalCount)     // todo 匹配的总行数,未设置返回则返回-1
 	fmt.Println("RowCount: ", len(searchResponse.Rows))        // 返回的行数
 	for _, row := range searchResponse.Rows {
 		jsonBody, err := json.Marshal(row)
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println("Row: ", string(jsonBody)) // 不设置columnsToGet，默认只返回主键
+		fmt.Println("Row: ", string(jsonBody))
 	}
-	// 设置返回所有列
+
+
+
+
+
+	//查询二：设置返回所有列
 	searchRequest.SetColumnsToGet(&tablestore.ColumnsToGet{
 		ReturnAll: true,
 	})
@@ -518,6 +533,7 @@ func MatchQuery(client *tablestore.TableStoreClient, tableName string, indexName
 		return
 	}
 	fmt.Println("IsAllSuccess: ", searchResponse.IsAllSuccess) // 查看返回结果是否完整
+	fmt.Println("TotalCount: ", searchResponse.TotalCount)
 	fmt.Println("RowCount: ", len(searchResponse.Rows))
 	for _, row := range searchResponse.Rows {
 		jsonBody, err := json.Marshal(row)
@@ -529,20 +545,29 @@ func MatchQuery(client *tablestore.TableStoreClient, tableName string, indexName
 }
 
 /**
- * 查询表中Col_Text这一列的值能够匹配"hangzhou shanghai"的数据，匹配条件为短语匹配(要求短语完整的按照顺序匹配)，返回匹配到的总行数和一些匹配成功的行。
+ * 查询表中desc 这一列的值能够匹配"杭州 西湖"的数据，匹配条件为短语匹配(要求短语完整的按照顺序匹配)，返回匹配到的总行数和一些匹配成功的行。
  */
 func MatchPhraseQuery(client *tablestore.TableStoreClient, tableName string, indexName string) {
 	searchRequest := &tablestore.SearchRequest{}
+	//1.数据表名称
 	searchRequest.SetTableName(tableName)
+	//2.多元索引名称
 	searchRequest.SetIndexName(indexName)
-	query := &search.MatchPhraseQuery{} // 设置查询类型为MatchPhraseQuery
-	query.FieldName = "Col_Text"        // 设置要匹配的字段
-	query.Text = "hangzhou shanghai"    // 设置要匹配的值
+	//3.设置查询类型为MatchPhraseQuery
 	searchQuery := search.NewSearchQuery()
+	query := &search.MatchPhraseQuery{} // 设置查询类型为MatchPhraseQuery
+	query.FieldName = "desc"        // 设置要匹配的字段
+	query.Text = "杭州 西湖"    // 设置要匹配的值
 	searchQuery.SetQuery(query)
 	searchQuery.SetOffset(0) // 设置offset为0
 	searchQuery.SetLimit(20) // 设置limit为20，表示最多返回20条数据
 	searchRequest.SetSearchQuery(searchQuery)
+
+
+
+
+
+
 	searchResponse, err := client.Search(searchRequest)
 	if err != nil {
 		fmt.Printf("%#v", err)
@@ -581,16 +606,19 @@ func MatchPhraseQuery(client *tablestore.TableStoreClient, tableName string, ind
 
 
 /**
- * 查询表中Col_Keyword这一列前缀为"hangzhou"的数据。
+ * 查询表中name这一列前缀为"jud"的数据。
  */
 func PrefixQuery(client *tablestore.TableStoreClient, tableName string, indexName string) {
 	searchRequest := &tablestore.SearchRequest{}
+	//1.数据表名称
 	searchRequest.SetTableName(tableName)
+	//2.多元索引名称
 	searchRequest.SetIndexName(indexName)
-	query := &search.PrefixQuery{}  // 设置查询类型为PrefixQuery
-	query.FieldName = "Col_Keyword" // 设置要匹配的字段
-	query.Prefix = "hangzhou"       // 设置前缀
+	//3.设置查询类型为PrefixQuery。
 	searchQuery := search.NewSearchQuery()
+	query := &search.PrefixQuery{}  // 设置查询类型为PrefixQuery
+	query.FieldName = "name" // 设置要匹配的字段
+	query.Prefix = "jud"       // 设置前缀
 	searchQuery.SetQuery(query)
 	searchRequest.SetSearchQuery(searchQuery)
 	// 设置返回所有列
@@ -614,22 +642,29 @@ func PrefixQuery(client *tablestore.TableStoreClient, tableName string, indexNam
 }
 
 /**
- * 使用通配符查询，查询表中Col_Keyword这一列的值匹配"hang*u"的数据
+ * 使用通配符查询，查询表中 name 这一列的值匹配"sa*5"的数据
  */
 func WildcardQuery(client *tablestore.TableStoreClient, tableName string, indexName string) {
 	searchRequest := &tablestore.SearchRequest{}
+
+	//1.数据表名称
 	searchRequest.SetTableName(tableName)
+	//2.多元索引名称
 	searchRequest.SetIndexName(indexName)
-	query := &search.WildcardQuery{} // 设置查询类型为WildcardQuery
-	query.FieldName = "Col_Keyword"
-	query.Value = "hang*u"
+	//3.设置查询类型为WildcardQuery
 	searchQuery := search.NewSearchQuery()
+	query := &search.WildcardQuery{} // 设置查询类型为WildcardQuery
+	query.FieldName = "name"
+	query.Value = "sa*5"
 	searchQuery.SetQuery(query)
 	searchRequest.SetSearchQuery(searchQuery)
-	// 设置返回所有列
+	//4.设置返回所有列
 	searchRequest.SetColumnsToGet(&tablestore.ColumnsToGet{
 		ReturnAll: true,
 	})
+
+
+
 	searchResponse, err := client.Search(searchRequest)
 	if err != nil {
 		fmt.Printf("%#v", err)
@@ -647,30 +682,36 @@ func WildcardQuery(client *tablestore.TableStoreClient, tableName string, indexN
 }
 
 /**
- * 查询表中Col_Long这一列大于3的数据，结果按照Col_Long这一列的值逆序排序。
+ * 查询表中age这一列大于100的数据，结果按照age这一列的值逆序排序。
  */
 func RangeQuery(client *tablestore.TableStoreClient, tableName string, indexName string) {
 	searchRequest := &tablestore.SearchRequest{}
+	//1.数据表名称
 	searchRequest.SetTableName(tableName)
+	//2.多元索引名称
 	searchRequest.SetIndexName(indexName)
+	//3.设置查询类型为RangeQuery。
 	searchQuery := search.NewSearchQuery()
 	rangeQuery := &search.RangeQuery{} // 设置查询类型为RangeQuery
-	rangeQuery.FieldName = "Col_Long"  // 设置针对哪个字段
-	rangeQuery.GT(3)                   // 设置该字段的范围条件，大于3
+	rangeQuery.FieldName = "age"  // 设置针对哪个字段
+	rangeQuery.GT(100)                   // 设置该字段的范围条件，大于3
 	searchQuery.SetQuery(rangeQuery)
-	// 设置按照Col_Long这一列逆序排序
-	searchQuery.SetSort(&search.Sort{
+	searchQuery.SetSort(&search.Sort{// 设置按照age这一列逆序排序
 		[]search.Sorter{
 			&search.FieldSort{
-				FieldName: "Col_Long",
+				FieldName: "age",
 				Order:     search.SortOrder_DESC.Enum(),
 			},
 		},
 	})
 	searchRequest.SetSearchQuery(searchQuery)
+	//4.是否返回所有列
 	searchRequest.SetColumnsToGet(&tablestore.ColumnsToGet{
 		ReturnAll: true,
 	})
+
+
+
 	searchResponse, err := client.Search(searchRequest)
 	if err != nil {
 		fmt.Printf("%#v", err)
@@ -678,6 +719,7 @@ func RangeQuery(client *tablestore.TableStoreClient, tableName string, indexName
 	}
 	fmt.Println("IsAllSuccess: ", searchResponse.IsAllSuccess) // 查看返回结果是否完整
 	fmt.Println("RowCount: ", len(searchResponse.Rows))
+	//fmt.Println(string(searchResponse.NextToken))
 	for _, row := range searchResponse.Rows {
 		jsonBody, err := json.Marshal(row)
 		if err != nil {
@@ -790,32 +832,30 @@ func GeoPolygonQuery(client *tablestore.TableStoreClient, tableName string, inde
 
 /**
  * 通过BoolQuery进行复合条件查询。
+ * todo golang函数里面的花括号中内容是作为一个单独的语句块，其中的变量是单独的作用域，同名变量会覆盖外层。
  */
 func BoolQuery(client *tablestore.TableStoreClient, tableName string, indexName string) {
 	searchRequest := &tablestore.SearchRequest{}
+	//1.数据表名称
 	searchRequest.SetTableName(tableName)
+	//2.多元索引名称
 	searchRequest.SetIndexName(indexName)
 
-	/**
-	 * 查询条件一：RangeQuery，Col_Long这一列的值要大于3
-	 */
+	//查询条件一：RangeQuery，age这一列的值要大于100
 	rangeQuery := &search.RangeQuery{}
-	rangeQuery.FieldName = "Col_Long"
-	rangeQuery.GT(3)
-
-	/**
-	 * 查询条件二：MatchQuery，Col_Keyword这一列的值要匹配"hangzhou"
-	 */
+	rangeQuery.FieldName = "age"
+	rangeQuery.GT(100)
+	//查询条件二：MatchQuery，desc这一列的值要匹配"杭州"
 	matchQuery := &search.MatchQuery{}
-	matchQuery.FieldName = "Col_Keyword"
-	matchQuery.Text = "hangzhou"
+	matchQuery.FieldName = "desc"
+	matchQuery.Text = "杭州"
 
+
+	//todo  MustQueries
 	{
-		/**
-		 * 构造一个BoolQuery，设置查询条件是必须同时满足"条件一"和"条件二"
-		 */
+		//构造一个BoolQuery，设置查询条件是必须同时满足"条件一"和"条件二"
 		boolQuery := &search.BoolQuery{
-			MustQueries: []search.Query{
+			MustQueries: []search.Query{ //多个Query列表，行数据必须满足所有的子查询条件才算匹配，等价于And操作符。
 				rangeQuery,
 				matchQuery,
 			},
@@ -831,6 +871,8 @@ func BoolQuery(client *tablestore.TableStoreClient, tableName string, indexName 
 		fmt.Println("IsAllSuccess: ", searchResponse.IsAllSuccess) // 查看返回结果是否完整
 		fmt.Println("RowCount: ", len(searchResponse.Rows))
 	}
+
+	//todo ShouldQueries
 	{
 		/**
 		 * 构造一个BoolQuery，设置查询条件是至少满足"条件一"和"条件二"中的一个
@@ -853,6 +895,10 @@ func BoolQuery(client *tablestore.TableStoreClient, tableName string, indexName 
 		fmt.Println("IsAllSuccess: ", searchResponse.IsAllSuccess) // 查看返回结果是否完整
 		fmt.Println("RowCount: ", len(searchResponse.Rows))
 	}
+
+
+
+
 }
 
 /**
@@ -1308,17 +1354,16 @@ func GroupBySample(client *tablestore.TableStoreClient, tableName string, indexN
 	}
 }
 
-//func computeSplits(client *tablestore.TableStoreClient, tableName string, indexName string) (*tablestore.ComputeSplitsResponse, error) {
-//	req := &tablestore.ComputeSplitsRequest{}
-//	req.
-//		SetTableName(tableName).
-//		SetSearchIndexSplitsOptions(tablestore.SearchIndexSplitsOptions{IndexName:indexName})
-//	res, err := client.ComputeSplits(req)
-//	if err != nil {
-//		return nil, err
-//	}
-//	return res, nil
-//}
+func computeSplits(client *tablestore.TableStoreClient, tableName string, indexName string) (*tablestore.ComputeSplitPointsBySizeResponse, error) {
+
+	req := &tablestore.ComputeSplitPointsBySizeRequest{}
+	req.SetTableName(tableName).SetSearchIndexSplitsOptions(tablestore.SearchIndexSplitsOptions{IndexName:indexName})
+	res, err := client.ComputeSplits(req)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
 
 /**
  * ParallelScan单并发
@@ -1411,3 +1456,121 @@ func GroupBySample(client *tablestore.TableStoreClient, tableName string, indexN
 //	}
 //	wg.Wait()
 //}
+
+
+
+//'[{"tag":"表格存储","score":97.317251}，{"score":50.770918,"tag":"沙漠"}]'
+func NestedQuery(client *tablestore.TableStoreClient, tableName string, indexName string) {
+	searchRequest := &tablestore.SearchRequest{}
+	//1.数据表名称
+	searchRequest.SetTableName(tableName)
+	//2.多元索引名称
+	searchRequest.SetIndexName(indexName)
+	//3.嵌套类型的列中子列上的查询，子列上的查询可以是任意Query类型。
+	searchQuery := search.NewSearchQuery()
+	query := &search.NestedQuery{ //设置查询类型为NestedQuery。
+		Path: "nests", //设置嵌套类型字段的路径。
+		Query: &search.TermQuery{ //构造NestedQuery的子查询。
+			FieldName: "nests.tag", //设置字段名，注意带有Nested列的前缀。
+			Term:      "大山",          //设置要查询的值。
+		},
+		ScoreMode: search.ScoreMode_Avg,
+	}
+	searchQuery.SetQuery(query)
+	searchRequest.SetSearchQuery(searchQuery)
+	//4.设置为返回所有列。
+	searchRequest.SetColumnsToGet(&tablestore.ColumnsToGet{
+		ReturnAll: true,
+	})
+
+
+
+
+
+
+
+	searchResponse, err := client.Search(searchRequest)
+	if err != nil {
+		fmt.Printf("%#v", err)
+		return
+	}
+	fmt.Println("IsAllSuccess: ", searchResponse.IsAllSuccess) //查看返回结果是否完整。
+	fmt.Println("RowCount: ", len(searchResponse.Rows))
+	for _, row := range searchResponse.Rows {
+		jsonBody, err := json.Marshal(row)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Row: ", string(jsonBody))
+	}
+}
+
+
+
+func QueryWithCollapse(client *tablestore.TableStoreClient, tableName string, indexName string) {
+	searchRequest := &tablestore.SearchRequest{}
+	searchRequest.SetTableName(tableName)       //设置数据表名称。
+	searchRequest.SetIndexName(indexName)       //设置多元索引名称。
+
+	searchQuery := search.NewSearchQuery()
+	searchQuery.SetQuery(&search.MatchQuery{    //构造查询条件。
+		FieldName:          "name",
+		Text:               "sam",
+	})
+	searchQuery.SetCollapse(&search.Collapse{
+		FieldName: "age",              //根据"product_name"列对结果集做折叠。
+
+	})
+	searchQuery.SetOffset(0)
+	searchQuery.SetLimit(100)
+	searchRequest.SetColumnsToGet(&tablestore.ColumnsToGet{ReturnAll:true}) //设置为返回所有列。
+	searchRequest.SetSearchQuery(searchQuery)
+
+	searchResponse, err := client.Search(searchRequest)   //查询。
+	if err != nil {
+		fmt.Println("Failed to search with error:", err)
+		return
+	}
+	for _, row := range searchResponse.Rows {           //打印本次返回的行。
+		jsonBody, err := json.Marshal(row)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Row: ", string(jsonBody))
+	}
+}
+
+
+
+func ExistQuery(client *tablestore.TableStoreClient, tableName string, indexName string) {
+	searchRequest := &tablestore.SearchRequest{}
+	searchRequest.SetTableName(tableName)
+	searchRequest.SetIndexName(indexName)
+	query := &search.ExistsQuery{} //设置查询类型为ExitsQuery。
+	query.FieldName = "name" //设置列名。
+	searchQuery := search.NewSearchQuery()
+	searchQuery.SetQuery(query)
+	searchQuery.SetGetTotalCount(true)
+	searchRequest.SetSearchQuery(searchQuery)
+	//设置为返回所有列。
+	searchRequest.SetColumnsToGet(&tablestore.ColumnsToGet{
+		ReturnAll:true,
+	})
+	searchResponse, err := client.Search(searchRequest)
+	if err != nil {
+		fmt.Printf("%#v", err)
+		return
+	}
+	fmt.Println("IsAllSuccess: ", searchResponse.IsAllSuccess) //查看返回结果是否完整。
+	fmt.Println("TotalCount: ", searchResponse.TotalCount) //打印匹配到的总行数，非返回行数。
+	fmt.Println("RowCount: ", len(searchResponse.Rows))
+	for _, row := range searchResponse.Rows {
+		jsonBody, err := json.Marshal(row)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Row: ", string(jsonBody))
+	}
+}
+
+

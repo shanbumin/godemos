@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
+	"otsdemo/bootstrap"
 	"otsdemo/constants"
+	"otsdemo/searchindex/servers"
 )
 
 func main() {
-	//1.初始化对接
-	client:=tablestore.NewClient(constants.EndPoint, constants.InstanceName, constants.AccessKeyId, constants.AccessKeySecret)
-	//2.嵌套类型查询
-	_=client
+
+	//嵌套类型查询
+	servers.NestedQuery(bootstrap.Client,constants.DemoTable,constants.DemoTableIndex)
 }

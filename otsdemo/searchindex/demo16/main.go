@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
+	"otsdemo/bootstrap"
 	"otsdemo/constants"
+	"otsdemo/searchindex/servers"
 )
 
+//使用多元索引时，可以在创建时指定索引预排序和在查询时指定排序方式，在获取返回结果时可以使用Limit和Offset或者使用Token进行翻页。
 func main() {
-	//1.初始化对接
-	client:=tablestore.NewClient(constants.EndPoint, constants.InstanceName, constants.AccessKeyId, constants.AccessKeySecret)
-	//2.排序和翻页
-	_=client
+	//排序和翻页
+	servers.QueryRowsWithToken(bootstrap.Client,constants.DemoTable,constants.DemoTableIndex)
 }

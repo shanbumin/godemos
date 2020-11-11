@@ -1,13 +1,14 @@
 package main
 
 import (
-	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
+	"otsdemo/bootstrap"
 	"otsdemo/constants"
+	"otsdemo/searchindex/servers"
 )
 
+
+//通配符查询中，要匹配的值可以是一个带有通配符的字符串，目前支持星号（*）和问号（?）两种通配符。
+//要匹配的值中可以用星号（*）代表任意字符序列，或者用问号（?）代表任意单个字符，且支持以星号（*）或问号（?）开头。例如查询“table*e”，可以匹配到“tablestore”。
 func main() {
-	//1.初始化对接
-	client:=tablestore.NewClient(constants.EndPoint, constants.InstanceName, constants.AccessKeyId, constants.AccessKeySecret)
-	//2.通配符查询
-	_=client
+	servers.WildcardQuery(bootstrap.Client,constants.DemoTable,constants.DemoTableIndex)
 }

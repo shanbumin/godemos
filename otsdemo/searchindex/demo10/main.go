@@ -1,13 +1,12 @@
 package main
 
 import (
-	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tablestore"
+	"otsdemo/bootstrap"
 	"otsdemo/constants"
+	"otsdemo/searchindex/servers"
 )
-
+//RangeQuery根据范围条件查询表中的数据。对于Text类型字段，只要分词后的词条中有词条满足范围条件即可。
 func main() {
-	//1.初始化对接
-	client:=tablestore.NewClient(constants.EndPoint, constants.InstanceName, constants.AccessKeyId, constants.AccessKeySecret)
-	//2.范围查询
-	_=client
+	//范围查询
+	servers.RangeQuery(bootstrap.Client,constants.DemoTable,constants.DemoTableIndex)
 }

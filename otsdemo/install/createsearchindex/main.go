@@ -28,7 +28,7 @@ func main() {
 		FieldName:        proto.String("name"),  // 设置字段名，使用proto.String用于获取字符串指针
 		FieldType:        tablestore.FieldType_KEYWORD, // 设置字段类型  字符串
 		Index:            proto.Bool(true),             // 设置开启索引
-		EnableSortAndAgg: proto.Bool(true),             // 设置开启排序与统计功能
+		EnableSortAndAgg: proto.Bool(true),             // 设置开启排序与统计功能，todo:只有EnableSortAndAgg设置为true的字段才能进行排序。
 	}
 	fieldAge := &tablestore.FieldSchema{
 		FieldName:        proto.String("age"),
@@ -54,9 +54,46 @@ func main() {
 		Index:            proto.Bool(true),
 		EnableSortAndAgg: proto.Bool(true),
 	}
+
+	fieldDesc := &tablestore.FieldSchema{
+		FieldName:        proto.String("desc"),  // 设置字段名，使用proto.String用于获取字符串指针
+		FieldType:        tablestore.FieldType_TEXT, // 设置字段类型  字符串
+		Index:            proto.Bool(true),             // 设置开启索引
+		EnableSortAndAgg: proto.Bool(false),             //todo 这里不能是true
+		//Analyzer:  //默认是单字分词
+		//AnalyzerParameter:  //默认是  大小写敏感：false，数字做分割：false
+	}
+
+	//每个数组元素都必须是相同类型。如果无法保证数组元素类型相同，可以考虑使用nested。
+	//array类型字段的取值只能以“json字符串”的列表，才能被同步到array类型索引。
+	fieldTags := &tablestore.FieldSchema{
+		FieldName:        proto.String("tags"),  // 设置字段名，使用proto.String用于获取字符串指针
+		FieldType:        tablestore.FieldType_KEYWORD, // 设置字段类型  字符串
+		Index:            proto.Bool(true),             // 设置开启索引
+		IsArray:proto.Bool(true),
+	}
+
+	fieldNests := &tablestore.FieldSchema{
+		FieldName:        proto.String("nests"),  // 设置字段名，使用proto.String用于获取字符串指针
+		FieldType:        tablestore.FieldType_NESTED, // 设置字段类型  字符串
+		FieldSchemas:[]*tablestore.FieldSchema{
+			{
+				FieldName:    proto.String("tag"),        //内部字段名
+				FieldType:    tablestore.FieldType_KEYWORD,    //内部字段类型
+			},
+			{
+				FieldName:    proto.String("score"),    //内部字段名
+				FieldType:    tablestore.FieldType_DOUBLE,    //内部字段类型
+			},
+		},
+	}
+
+
+
+
 	//--------
 	schemas := []*tablestore.FieldSchema{}
-	schemas = append(schemas, fieldName, fieldAge,fieldSalary,fieldMarried,fieldCreatedAt)
+	schemas = append(schemas, fieldName, fieldAge,fieldSalary,fieldMarried,fieldCreatedAt,fieldDesc,fieldTags,fieldNests)
 	indexSchema.FieldSchemas=schemas
 	//indexSchema.IndexSetting=  //索引设置
 	//indexSchema.IndexSort= //索引预排序设置(IndexSort)

@@ -26,7 +26,10 @@ func main() {
 	    tableMeta.AddDefinedColumn("age", tablestore.DefinedColumn_INTEGER) //年龄
 	    tableMeta.AddDefinedColumn("salary",tablestore.DefinedColumn_DOUBLE) //薪水
 	    tableMeta.AddDefinedColumn("married",tablestore.DefinedColumn_BOOLEAN) //是否已婚
-	    tableMeta.AddDefinedColumn("desc",tablestore.DefinedColumn_BINARY) //描述 todo 可以用来存图片二进制流的额，这里我们仅仅是演示而已
+	    tableMeta.AddDefinedColumn("tags",tablestore.DefinedColumn_STRING) //标签
+	    tableMeta.AddDefinedColumn("nests",tablestore.DefinedColumn_STRING) //嵌套
+	    tableMeta.AddDefinedColumn("desc",tablestore.DefinedColumn_STRING) //描述
+	    tableMeta.AddDefinedColumn("img",tablestore.DefinedColumn_BINARY) //todo 可以用来存图片二进制流的额，这里我们仅仅是演示而已
 	    tableMeta.AddDefinedColumn("created_at",tablestore.DefinedColumn_INTEGER) //创建时间
 	    tableMeta.AddDefinedColumn("updated_at",tablestore.DefinedColumn_INTEGER) //修改时间
 		createTableRequest.TableMeta = tableMeta

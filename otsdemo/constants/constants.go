@@ -37,7 +37,10 @@ const BatchTable  =  "sbm_batch"
 
 
 
-
+const EndPoint  = "https://tulong.cn-shanghai.ots.aliyuncs.com"
+const InstanceName ="akfjaksdfjkals"
+const AccessKeyId  =  "aslfjlsjfklsajflkjasfsljsf"
+const AccessKeySecret  =  "adsfjaslkfjaskljfklsajfljsf"
 
 
 
