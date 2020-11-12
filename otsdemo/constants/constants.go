@@ -5,7 +5,7 @@ const  DemoTable="sbm_demos" //测试表名
 const  DemoTableIndex=DemoTable+"_index"
 const DemoTableTunnel=DemoTable+"_tunnel"
 const DemoTableTunnel2=DemoTable+"_tunnel2"
-const  DemoTableTunnelID= "936c6260-3620-44ef-a62d-159d12df8ce8"
+const  DemoTableTunnelID= "9f15431f-2baa-4cdc-a29d-5881c22c5b3d"
 const  DemoTableTunnel2ID= "3d0e08c7-4b20-4783-9978-f958fb3f3c97"
 
 //表结构操作相关的测试表
@@ -37,10 +37,7 @@ const BatchTable  =  "sbm_batch"
 
 
 
-const EndPoint  = "https://tulong.cn-shanghai.ots.aliyuncs.com"
-const InstanceName ="akfjaksdfjkals"
-const AccessKeyId  =  "aslfjlsjfklsajflkjasfsljsf"
-const AccessKeySecret  =  "adsfjaslkfjaskljfklsajfljsf"
+
 
 
 

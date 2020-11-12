@@ -20,7 +20,7 @@ func main() {
 	//创建通道
 	req := &tunnel.CreateTunnelRequest{
 		TableName: constants.DemoTable,
-		TunnelName: constants.DemoTableTunnel2,
+		TunnelName: constants.DemoTableTunnel,
 		Type:       tunnel.TunnelTypeBaseStream, //创建全量加增量类型的Tunnel。
 	}
 	resp, err := bootstrap.TunnelClient.CreateTunnel(req)

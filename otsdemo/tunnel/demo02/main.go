@@ -34,6 +34,7 @@ func main() {
 	//使用TunnelDaemon持续消费指定tunnel。
 	daemon := tunnel.NewTunnelDaemon(bootstrap.TunnelClient,constants.DemoTableTunnel2ID, workConfig)
 	log.Fatal(daemon.Run())
+	defer  daemon.Close()
 
 }
 

@@ -42,16 +42,16 @@ var appids =map[int]string{
 
 func main() {
 
+//每次插入三个，一共插入5次
 
 
 
-
-	for  i:=1;i<=1;i++{
+	for  i:=1;i<=3;i++{
 
 
 		batchWriteReq := &tablestore.BatchWriteRowRequest{}
 		//批量接口一次只能插入200行
-		for j := 1; j <= 200; j++ {
+		for j := 1; j <= 3; j++ {
 			putRowChange := new(tablestore.PutRowChange)
 			//1.TableName
 			putRowChange.TableName = constants.DemoTable
@@ -83,6 +83,8 @@ func main() {
 		} else {
 			fmt.Println("batch write row finished",i)
 		}
+
+		time.Sleep(5 * time.Second) //休息会再插入下一次
 
 
 
