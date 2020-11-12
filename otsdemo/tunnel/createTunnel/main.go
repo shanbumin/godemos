@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
+	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tunnel"
 	"log"
 	"os"
 	"os/signal"
 	"otsdemo/bootstrap"
 	"otsdemo/constants"
 	"syscall"
-	"github.com/aliyun/aliyun-tablestore-go-sdk/v5/tunnel"
 	"time"
 )
 
@@ -47,6 +47,8 @@ func main() {
 
 	//start consume tunnel
 	workConfig := &tunnel.TunnelWorkerConfig{
+		HeartbeatTimeout: 1 * time.Second,//worker同Tunnel服务的心跳超时时间，通常使用默认值即可。
+		HeartbeatInterval: 3* time.Second,//worker发送心跳的频率，通常使用默认值即可。
 		ProcessorFactory: &tunnel.SimpleProcessFactory{
 			CustomValue: "user defined interface{} value",
 			ProcessFunc: exampleConsumeFunction,
@@ -75,9 +77,9 @@ func main() {
 func exampleConsumeFunction(ctx *tunnel.ChannelContext, records []*tunnel.Record) error {
 	fmt.Println("user-defined information", ctx.CustomValue)
 	for _, rec := range records {
-		time.Sleep(3 * time.Second)
+		time.Sleep(1 * time.Second)
 		fmt.Println("tunnel record detail:", rec.String())
-		fmt.Println("\r\n")
+		fmt.Println("-----\r\n")
 	}
 	fmt.Println("a round of records consumption finished") //一轮消费结束
 	return nil

@@ -46,7 +46,7 @@ func main() {
 
 
 
-	for  i:=1;i<=3;i++{
+	for  i:=1;i<=100;i++{
 
 
 		batchWriteReq := &tablestore.BatchWriteRowRequest{}
@@ -56,6 +56,7 @@ func main() {
 			//1.TableName
 			putRowChange.TableName = constants.DemoTable
 			//2.主键
+			fmt.Println(i*j)
 			name:="sam"+strconv.Itoa(i*j)
 			putPk := new(tablestore.PrimaryKey)
 			putPk.AddPrimaryKeyColumn("appid",appids[i])
