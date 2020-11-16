@@ -7,7 +7,7 @@ import (
 
 //var gsi1Data=map[int]map[string]interface{}{
 //}
-
+//数组定义并初始化
 var gsi1Data=[...]map[string]interface{}{
 	{"cell_number":123456,"start_time":1532574644,"called_number":654321,"duration":60,"base_station_number":1},
 	{"cell_number":234567,"start_time":1532574714,"called_number":765432,"duration":10,"base_station_number":1},

@@ -30,9 +30,12 @@ func PutRowSample(client *tablestore.TableStoreClient, tableName string) {
 	putRowChange.AddColumn("age",int64(28))
 	putRowChange.AddColumn("salary",float64(3000.28))
 	putRowChange.AddColumn("married",true)
-	putRowChange.AddColumn("desc",[]byte(samutils.RandStringWordL(5)))
+	putRowChange.AddColumn("desc",samutils.RandStringWordL(5))
+	putRowChange.AddColumn("img",[]byte(samutils.RandStringWordL(5)))
 	putRowChange.AddColumn("created_at",int64(time.Now().Unix()))
 	putRowChange.AddColumn("updated_at",int64(time.Now().Unix()))
+	putRowChange.AddColumn("tags","[\"蓝\",\"绿\"]")
+	putRowChange.AddColumn("nests","[{\"tag\":\"红2\",\"score\":100.20},{\"tag\":\"黑2\",\"score\":60}]")
 	//4.使用条件更新，可以设置原行的存在性条件或者原行中某列的列值条件
 	putRowChange.SetCondition(tablestore.RowExistenceExpectation_IGNORE)
 
@@ -147,9 +150,9 @@ func DeleteRowSample(client *tablestore.TableStoreClient, tableName string) {
 
 	//3.条件更新
 	deleteRowReq.DeleteRowChange.SetCondition(tablestore.RowExistenceExpectation_EXPECT_EXIST)
-	clCondition1 := tablestore.NewSingleColumnCondition("col2", tablestore.CT_EQUAL, int64(3))
-	clCondition1.FilterIfMissing=true //列不存在的时候不允许通过，否则删除的行不存在这个字段也删除成功了
-	deleteRowReq.DeleteRowChange.SetColumnCondition(clCondition1)
+	//clCondition1 := tablestore.NewSingleColumnCondition("col2", tablestore.CT_EQUAL, int64(3))
+	//clCondition1.FilterIfMissing=true //列不存在的时候不允许通过，否则删除的行不存在这个字段也删除成功了
+	//deleteRowReq.DeleteRowChange.SetColumnCondition(clCondition1)
 
 
 

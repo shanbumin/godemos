@@ -46,12 +46,12 @@ func main() {
 
 
 
-	for  i:=1;i<=100;i++{
+	for  i:=1;i<=3;i++{
 
 
 		batchWriteReq := &tablestore.BatchWriteRowRequest{}
 		//批量接口一次只能插入200行
-		for j := 1; j <= 3; j++ {
+		for j := 1; j <= 10; j++ {
 			putRowChange := new(tablestore.PutRowChange)
 			//1.TableName
 			putRowChange.TableName = constants.DemoTable

@@ -1,0 +1,24 @@
+{
+    "sequenceInfo":{
+        "epoch":0,
+        "rowIndex":1,
+        "timestamp":1605257596917137
+    },
+    "recordType":"DELETE",
+    "columns":[
+
+    ],
+    "primaryKey":[
+        {
+            "name":"appid",
+            "type":"STRING",
+            "value":"wx32d84d8f87a72033"
+        },
+        {
+            "name":"openid",
+            "type":"STRING",
+            "value":"oVqItwN1CTLFCVd_KYtkeT8uUD_8"
+        }
+    ],
+    "timestamp":1605257596917137
+}
