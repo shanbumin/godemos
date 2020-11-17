@@ -12,39 +12,13 @@ import (
 	"time"
 )
 
-type Config struct {
-	Endpoint  string
-	Instance  string
-	TableName string
-	AkId      string
-	AkSecret  string
-}
 
-var testConfig = Config{
-	Endpoint:  "<Your instance endpoint>",
-	Instance:  "<Your instance name>",
-	TableName: "<Your table name>",
-	AkId:      "<Your ak id>",
-	AkSecret:  "<Your ak secret>",
-}
+
+
 
 func main() {
 	//创建客户端
-	//tunnelClient := tunnel.NewTunnelClient(testConfig.Endpoint, testConfig.Instance, testConfig.AkId, testConfig.AkSecret)
 	tunnelClient:=bootstrap.TunnelClient
-	//创建通道
-	//tunnelName := "exampleTunnel"
-	//req := &tunnel.CreateTunnelRequest{
-	//	TableName:  testConfig.TableName,
-	//	TunnelName: tunnelName,
-	//	Type:       tunnel.TunnelTypeBaseStream,
-	//}
-	//resp, err := tunnelClient.CreateTunnel(req)
-	//if err != nil {
-	//	log.Fatal("create test tunnel failed", err)
-	//}
-	//log.Println("tunnel id is", resp.TunnelId)
-
 	var daemon *tunnel.TunnelWorkerDaemon
 	//start consume tunnel
 	workConfig := &tunnel.TunnelWorkerConfig{
