@@ -5,8 +5,17 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
+	"net/http"
 	"time"
 )
+
+//自定义客户端配置
+var DefaultTunnelConfig = &tunnel.TunnelConfig{
+	MaxRetryElapsedTime: 3 * time.Second, //最大指数退避重试时间。  默认75
+	RequestTimeout:     3 * time.Second,//HTTP请求超时时间。  默认60
+	Transport:           http.DefaultTransport,//http.DefaultTransport。
+}
+
 
 //通道回退配置
 var DefaultBackoffConfig = tunnel.ChannelBackoffConfig{
@@ -19,7 +28,7 @@ var DefaultBackoffConfig = tunnel.ChannelBackoffConfig{
 
 //日志切割
 var DefaultSyncer = zapcore.AddSync(&lumberjack.Logger{
-	Filename:   "tunnelClient.log",
+	Filename:   "./logs/tnl.log",
 	MaxSize:    512, //MB
 	MaxBackups: 5,
 	MaxAge:     30, //days
@@ -28,7 +37,7 @@ var DefaultSyncer = zapcore.AddSync(&lumberjack.Logger{
 
 //日志整体配置
 var DefaultLogConfig = zap.Config{
-	Level:       zap.NewAtomicLevelAt(zap.InfoLevel),//日志级别
+	Level:       zap.NewAtomicLevelAt(zap.WarnLevel),//日志级别
 	Development: false,
 	Sampling: &zap.SamplingConfig{
 		Initial:    100,

@@ -28,8 +28,8 @@ func main() {
 	var daemon *tunnel.TunnelWorkerDaemon
 	//start consume tunnel
 	workConfig := &tunnel.TunnelWorkerConfig{
-		HeartbeatTimeout: 10 * time.Second,//worker同Tunnel服务的心跳超时时间，通常使用默认值即可。
-		HeartbeatInterval: 5* time.Second,//worker发送心跳的频率，通常使用默认值即可。
+		HeartbeatInterval: 5* time.Second,//worker发送心跳的频率，通常使用默认值即可。默认值30
+		HeartbeatTimeout: 10 * time.Second,//worker同Tunnel服务的心跳超时时间，通常使用默认值即可。默认值300
 		ProcessorFactory: &tunnel.SimpleProcessFactory{
 			//CustomValue: "user defined interface{} value",
 			ProcessFunc: exampleConsumeFunction,
