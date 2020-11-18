@@ -1,0 +1,2 @@
+{"level":"info","time":"2020-11-18T11:24:28.246+0800","linenum":"/Users/sam/docker-compose/sam/wwwroot/learn/godemos/zapdemo/demo04/main.go:55","msg":"log 初始化成功","serviceName":"serviceName"}
+{"level":"info","time":"2020-11-18T11:24:28.246+0800","linenum":"/Users/sam/docker-compose/sam/wwwroot/learn/godemos/zapdemo/demo04/main.go:56","msg":"无法获取网址","serviceName":"serviceName","url":"http://www.baidu.com","attempt":3,"backoff":1}
