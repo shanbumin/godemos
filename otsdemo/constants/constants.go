@@ -32,7 +32,10 @@ const GSI2Definedcol1Index  = GSI2Table+"_gsi_definedcol1"
 const BatchTable  =  "sbm_batch"
 
 
-
+const EndPoint  = "sbmhttps://tulong.cn-shanghai.ots.aliyuncs.comsbm"
+const InstanceName ="sbmtulong"
+const AccessKeyId  =  "sbmLTAI4GL6LqVGQCVaDbAoKZuEsbm"
+const AccessKeySecret  =  "sbm4dsxaLlZeZsIsbmVuOQN9cICTnv0dawVgsbm"
 
 
 
