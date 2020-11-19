@@ -1,0 +1,21 @@
+https://github.com/cenkalti/backoff/tree/v2
+
+https://godoc.org/github.com/cenkalti/backoff#pkg-examples
+
+
+
+backoff 退避算法
+
+什么是退避算法？通常我们的某服务发生故障时，我们会固定间隔时间来重试一次？但这样会带来一些问题，同一时间有很多请求在重试可能会造成无意义的请求。
+
+指数退避算法会利用抖动（随机延迟）来防止连续的冲突。 效果如下，每次间隔的时间都是指数上升，另外加了少许的随机。
+
+等待时间：101 ms
+等待时间：208 ms
+等待时间：413 ms
+等待时间：821 ms
+等待时间：1602 ms
+等待时间：3203 ms
+
+#我这边封装了golang backoff的指数退避库，有兴趣的可以看看代码https://github.com/rfyiamcool/backoff
+
