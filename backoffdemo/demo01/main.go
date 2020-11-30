@@ -16,8 +16,8 @@ func main() {
 
 	jitter:=0.33
 	multiplier:=2.0
-	interval:= 16 * time.Millisecond
-	maxInterval:= time.Second
+	interval:= 50 * time.Millisecond //每次等待的最小值
+	maxInterval:= 3* time.Second  //每次等待的最大值 todo 并不是严格的，只是在3附近徘徊
 	maxElapsed:=  75 * time.Second
 	b := backoff.NewExponentialBackOff()
 	b.RandomizationFactor = jitter //随机因素 0.33

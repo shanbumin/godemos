@@ -27,18 +27,21 @@ func main() {
 	tunnelClient:=bootstrap.DefTunnelClient
 	var daemon *tunnel.TunnelWorkerDaemon
 	//start consume tunnel
+
 	workConfig := &tunnel.TunnelWorkerConfig{
 		HeartbeatInterval: 5* time.Second,//worker发送心跳的频率，通常使用默认值即可。默认值30
 		HeartbeatTimeout: 10 * time.Second,//worker同Tunnel服务的心跳超时时间，通常使用默认值即可。默认值300
 		ProcessorFactory: &tunnel.SimpleProcessFactory{
 			//CustomValue: "user defined interface{} value",
+			CpInterval:10 * time.Second,//processor checkpoint的间隔时间，默认就是10s
 			ProcessFunc: exampleConsumeFunction,
 			ShutdownFunc: func(ctx *tunnel.ChannelContext) {
 				fmt.Println("shutdown hook",ctx.ClientId)
 				daemon.Close()
 			},
+			//Logger:  //todo 注意这里的日志是processor专用的，我们可以在外部直接构造的额
 		},
-		LogConfig:&conf.DefaultLogConfig,
+		LogConfig:&conf.DefaultLogConfig, //todo 注意这里的日志是worker使用的
 		LogWriteSyncer:conf.DefaultSyncer,
 		BackoffConfig:&conf.DefaultBackoffConfig,
 	}
