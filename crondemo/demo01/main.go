@@ -33,7 +33,7 @@ func main() {
 	//检查cron作业条目的下一个和上一个运行时间。
 	//inspect(c.Entries())
 	//停止定时任务(不停止已经运行的任务)
-	time.Sleep(120 * time.Second)
+	time.Sleep(10 * time.Second)
 	c.Stop()
 
 	//Parse()：解析与校验cron表达式

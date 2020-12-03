@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/robfig/cron"
 	"log"
-	"fmt"
 )
 
 
@@ -11,7 +10,7 @@ type TestJob struct {
 }
 
 func (this TestJob)Run() {
-	fmt.Println("testJob1...")
+	log.Println("testJob1...")
 }
 
 //-------------------------------------------------
@@ -20,7 +19,7 @@ type Test2Job struct {
 }
 
 func (this Test2Job)Run() {
-	fmt.Println("testJob2...")
+	log.Println("testJob2...")
 }
 
 //启动多个任务
