@@ -112,6 +112,8 @@ func BatchGetRowSample(client *tablestore.TableStoreClient, tableName string) {
 //todo 同一表中有两个主键A和B，A<B。如正序读取[A, B)，则按从A至B的顺序返回主键大于等于A、小于B的行；逆序读取[B, A)，则按从B至A的顺序返回大于A、小于等于B的数据。
 
 //todo  说明 表格存储表中的行默认是按照主键排序的，而主键是由【全部主键列】按照顺序组成的，所以不能理解为表格存储会按照某列主键排序，这是常见的误区。
+//P1004|1741|1606924800|1606492800
+//P1004|1741|1607011199|1606579199
 func GetRangeSample(client *tablestore.TableStoreClient, tableName string) {
 	getRangeRequest := &tablestore.GetRangeRequest{}
 	rangeRowQueryCriteria := &tablestore.RangeRowQueryCriteria{}

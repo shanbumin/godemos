@@ -1,0 +1,56 @@
+一、官方参考文档
+
+
+https://github.com/protocolbuffers/protobuf/releases  [github] 读一下readme部分
+https://developers.google.com/protocol-buffers/  [开发者文档，被墙了]
+https://developers.google.com/protocol-buffers/docs/tutorials  [如何使用protobuf,被墙了]
+
+https://github.com/protocolbuffers/protobuf/releases [protocol编译器]
+https://geektutu.com/post/quick-go-protobuf.html [简明教程]
+注:要想用go语言使用protobuf这个工具，必须先安装protocol编译器，再下载go操作protubuf的接口-API,即protobuf对应语种的运行时。
+
+
+
+二、安装protocol编译器(protoc工具)
+
+https://github.com/protocolbuffers/protobuf/releases
+https://github.com/protocolbuffers/protobuf/blob/master/src/README.md [安装说明]
+
+brew install protobuf  [mac上直接brew安装就可以了]
+protoc  --version   (2020.12.30  最新版:3.14.0)
+
+
+三、安装protobuf 运行时
+   Protobuf支持几种不同的编程语言。对于每种编程语言，您可以在相应的源目录中找到有关如何为该特定语言安装protobuf运行时的说明，这里我们只针对go这块进行安装:
+   go get -u github.com/golang/protobuf/protoc-gen-go
+
+
+四、我使用的版本
+
+- gcc 7.5.0
+- go 1.14.6
+- grpc 1.27.2
+- grpc-go 1.30.0
+- protoc  3.11.4     [protoc --version]
+- protoc-gen-go-grpc 1.30.0
+- protoc-gen-go 1.24.0
+
+
+五、快速入门体验
+
+比如我们定义了一个hello.proto文件，我们如何将该文件转为go语言的代码。
+编译proto到go代码: protoc --go_out=.  --proto_path=.  hello.proto
+
+- go_out 参数告知protoc编译器去加载对应的protoc-gen-go工具，然后通过该工具生成代码
+- proto_path指定查找proto文件所在的当前目录
+- 最后一个参数是要编译的proto文件名
+- 最终就生成了代码文件xxx.pb.go
+
+Protobuf核心的工具集是C++语言开发的，在官方的protoc编译器中并不支持Go语言。
+要想基于上面的hello.proto文件生成相应的Go代码，需要安装相应的插件。
+首先是安装官方的protoc工具，可以从 https://github.com/google/protobuf/releases 下载。
+然后是安装针对Go语言的代码生成插件，可以通过`go get github.com/golang/protobuf/protoc-gen-go`命令安装。
+
+
+
+
