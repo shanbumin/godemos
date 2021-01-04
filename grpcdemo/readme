@@ -1,7 +1,17 @@
-三、go使用grpc快速入门案例
+一、相关链接
+https://grpc.io/docs/  [官网]
+http://doc.oschina.net/grpc?t=56831   [中文文档]
+https://github.com/grpc/grpc  [github源码库]
+https://github.com/grpc/grpc/tree/master/examples/php  [php快速使用grpc]
+https://github.com/grpc/grpc-go/tree/master/examples   [go快速使用grpc]
 
-https://blog.csdn.net/junaozun/article/details/90694936
 
-a.写proto文件
-b.protoc --go_out=plugins=grpc:./ *.proto
-c.编写gRPC服务端
+
+
+
+
+
+https://blog.csdn.net/iotisan/article/details/103056599
+
+
+

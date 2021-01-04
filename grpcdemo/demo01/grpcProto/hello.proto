@@ -1,0 +1,34 @@
+syntax = "proto3";
+package grpcProto;
+//定义服务
+service HelloServer{
+    //rpc服务的函数名(传入参数) return (返回参数)
+
+    //服务一:打招呼的服务
+    rpc  Sayhello(HelloReq) returns (HelloRsp){}
+    //服务二:说名字的服务
+    rpc  Sayname(NameReq) returns (NameRsp){}
+}
+
+
+//使用服务一的时候，客户端发送给服务端以及服务端返回给客户端
+message HelloReq{
+    string msg =1;
+}
+message HelloRsp{
+    string  msg =1;
+}
+
+
+//使用服务二的时候，客户端发送给服务端以及服务端返回给客户端
+message  NameReq{
+    string name=1;
+}
+
+message NameRsp{
+    string msg =1;
+}
+
+
+//todo
+//protoc --go_out=plugins=grpc:./ *.proto
