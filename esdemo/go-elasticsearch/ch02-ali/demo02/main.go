@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/elastic/go-elasticsearch/v7/esapi"
-	"go-collection/elasticsearch/go-elasticsearch/lib/db"
+	"godemos/esdemo/go-elasticsearch/lib/db"
 )
 
 //删除索引

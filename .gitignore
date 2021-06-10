@@ -2,3 +2,4 @@
 go.sum
 test.db
 tunnelClient.log
+.DS_Store
