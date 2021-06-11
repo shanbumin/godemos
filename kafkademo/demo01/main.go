@@ -33,7 +33,7 @@ func main() {
 	msg.Key = sarama.StringEncoder("msg01")
 	msg.Value = sarama.StringEncoder("hello world...")
 
-	pid, offset, err := client.SendMessage(msg)
+	pid, offset, err := client.SendMessage(msg)//pid是命中的分区号   offset是命中分区的顺序号
 	if err != nil {
 		fmt.Println("send message failed,", err)
 		return

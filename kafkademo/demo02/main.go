@@ -18,15 +18,17 @@ func main() {
 	fmt.Println("connnect success...")
 	defer consumer.Close()
 
-	//2.选取topic
+	//2.获取某个topic的所有分区
 	partitions, err := consumer.Partitions("topic-fast")
 	if err != nil {
 		fmt.Println("geet partitions failed, err:", err)
 		return
 	}
 
+
 	//3.消费吧
 	for _, p := range partitions {
+
 		partitionConsumer, err := consumer.ConsumePartition("topic-fast", p, sarama.OffsetOldest)
 		if err != nil {
 			fmt.Println("partitionConsumer err:", err)
@@ -35,7 +37,7 @@ func main() {
 		wg.Add(1)
 		go func(){
 			for m := range partitionConsumer.Messages() {
-				fmt.Printf("key: %s, text: %s, offset: %d\n", string(m.Key), string(m.Value), m.Offset)
+				fmt.Printf("partition:%d,key: %s, text: %s, offset: %d\n",m.Partition, string(m.Key), string(m.Value), m.Offset)
 			}
 			wg.Done()
 		}()
